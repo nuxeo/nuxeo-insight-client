@@ -1,0 +1,124 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.nuxeo.ai</groupId>
+  <artifactId>nuxeo-insight-client</artifactId>
+  <version>0.0.0-11</version>
+
+  <name>Nuxeo Insight Client</name>
+  <description>Nuxeo Insight REST SDK</description>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>insight-rest-objects</module>
+    <module>insight-rest-client</module>
+  </modules>
+
+  <properties>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    <nuxeo.java.client>3.5.0</nuxeo.java.client>
+    <javax.version>1.3.2</javax.version>
+    <jsr305.version>3.0.2</jsr305.version>
+    <javax.validation.version>1.0.0.GA</javax.validation.version>
+    <log4j.version>2.13.3</log4j.version>
+    <javax.ws.version>1.1.1</javax.ws.version>
+    <jackson.version>2.11.3</jackson.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.nuxeo.ai</groupId>
+        <artifactId>insight-rest-objects</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.nuxeo.ai</groupId>
+        <artifactId>insight-rest-client</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.nuxeo.client</groupId>
+        <artifactId>nuxeo-java-client</artifactId>
+        <version>${nuxeo.java.client}</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.annotation</groupId>
+        <artifactId>javax.annotation-api</artifactId>
+        <version>${javax.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.validation</groupId>
+        <artifactId>validation-api</artifactId>
+        <version>${javax.validation.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.code.findbugs</groupId>
+        <artifactId>jsr305</artifactId>
+        <version>${jsr305.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-api</artifactId>
+        <version>${log4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.ws.rs</groupId>
+        <artifactId>jsr311-api</artifactId>
+        <version>${javax.ws.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-annotations</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>maven-public</id>
+      <url>https://packages.nuxeo.com/repository/maven-public</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </pluginRepository>
+    <pluginRepository>
+      <id>maven-internal</id>
+      <url>https://packages.nuxeo.com/repository/maven-internal</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <scm>
+    <connection>scm:git:git://github.com/nuxeo/nuxeo-insight-client.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com:nuxeo/nuxeo-insight-client.git</developerConnection>
+    <url>https://nuxeo.github.io</url>
+  </scm>
+
+  <distributionManagement>
+    <repository>
+      <id>maven-public-releases</id>
+      <url>https://packages.nuxeo.com/repository/maven-public-releases/</url>
+    </repository>
+    <snapshotRepository>
+      <id>maven-public-snapshots</id>
+      <url>https://packages.nuxeo.com/repository/maven-public-snapshots/</url>
+      <uniqueVersion>true</uniqueVersion>
+    </snapshotRepository>
+  </distributionManagement>
+
+</project>
