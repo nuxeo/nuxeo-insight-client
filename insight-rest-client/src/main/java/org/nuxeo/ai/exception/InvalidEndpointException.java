@@ -17,13 +17,15 @@
  *  Contributors:
  *       Andrei Nechaev
  */
-package org.nuxeo.ai.callers;
+package org.nuxeo.ai.exception;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.Map;
+public class InvalidEndpointException extends RuntimeException {
 
-public interface Caller<T> {
+    public InvalidEndpointException(String message) {
+        super(message);
+    }
 
-    Object call(T endpoint, Map<String, Serializable> parameters, Serializable payload) throws IOException;
+    public InvalidEndpointException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

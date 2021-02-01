@@ -18,22 +18,11 @@
  *       Andrei Nechaev
  */
 
-package org.nuxeo.ai;
+package org.nuxeo.ai.client;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import okhttp3.Response;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.nuxeo.ai.exception.ConfigurationException;
+import org.nuxeo.ai.exception.UnsupportedPathException;
 
 import javax.annotation.Nonnull;
-import java.io.IOException;
-import java.io.Serializable;
-import java.io.StringWriter;
-import java.util.Map;
-
-import static javax.ws.rs.core.Response.Status.OK;
-import static org.nuxeo.ai.InsightClient.MAPPER;
 
 public class API {
 
@@ -46,16 +35,16 @@ public class API {
     }
 
     public enum Export {
-        INIT(HttpMethod.POST), ATTACH, BIND, DONE;
+        INIT(HttpMethod.POST), ATTACH(HttpMethod.POST), BIND(HttpMethod.POST), DONE(HttpMethod.POST);
 
         public final HttpMethod method;
 
-        Export() {
-            this.method = HttpMethod.GET;
-        }
-
         Export(HttpMethod method) {
             this.method = method;
+        }
+
+        public String lowerName() {
+            return this.name().toLowerCase();
         }
 
         /**
@@ -74,7 +63,7 @@ public class API {
             case DONE:
                 return API_EXPORT_AI + "done/" + project + "/" + id;
             default:
-                return null;
+                throw new UnsupportedPathException("Invalid API call for " + this.name());
             }
         }
 
@@ -87,7 +76,11 @@ public class API {
          * @return {@link String} as uri
          */
         public String toPath(@Nonnull String project, @Nonnull String modelId, @Nonnull String corporaId) {
-            return API_EXPORT_AI + "bind/" + project + "?modelId=" + modelId + "&corporaId=" + corporaId;
+            if (this == BIND) {
+                return API_EXPORT_AI + "bind/" + project + "?modelId=" + modelId + "&corporaId=" + corporaId;
+            } else {
+                throw new UnsupportedPathException("Invalid API call for " + this.name());
+            }
         }
     }
 }

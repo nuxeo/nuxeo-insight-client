@@ -18,21 +18,26 @@
  *       Andrei Nechaev
  */
 
-package org.nuxeo.ai;
+package org.nuxeo.ai.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.nuxeo.ai.callers.Caller;
-import org.nuxeo.ai.callers.ExportCaller;
+import org.nuxeo.ai.LogInterceptor;
+import org.nuxeo.ai.ResponseHandler;
+import org.nuxeo.ai.api.ExportCaller;
+import org.nuxeo.ai.api.ExportResource;
+import org.nuxeo.ai.api.Resource;
 import org.nuxeo.ai.exception.ConfigurationException;
 import org.nuxeo.client.NuxeoClient;
 import org.nuxeo.client.spi.auth.BasicAuthInterceptor;
 import org.nuxeo.client.spi.auth.TokenAuthInterceptor;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 import static org.nuxeo.client.ConstantsV1.API_PATH;
@@ -48,9 +53,11 @@ public class InsightClient {
     private NuxeoClient client;
 
     public InsightClient(InsightConfiguration configuration) {
+        Objects.requireNonNull(configuration);
         this.configuration = configuration;
     }
 
+    @Nonnull
     public InsightConfiguration getConfiguration() {
         return configuration;
     }
@@ -94,15 +101,21 @@ public class InsightClient {
         return client != null;
     }
 
-    enum Resource {
-        EXPORT, TRAIN, PREDICT
+    @Nonnull
+    public String getUrl() {
+        return configuration.getUrl();
     }
 
-    public <T> Caller<T> api(Resource resource) {
-        switch (resource) {
-        case EXPORT:
-            return (Caller<T>) new ExportCaller(this);
-        default:
+    @Nonnull
+    public String getProjectId() {
+        return configuration.getProjectId();
+    }
+
+    @SuppressWarnings("unchecked") // TODO: check casting
+    public <T extends Resource> T api(Class<T> type) {
+        if (type.isAssignableFrom(ExportResource.class)) {
+            return (T) new ExportCaller(this);
+        } else {
             return null;
         }
     }
