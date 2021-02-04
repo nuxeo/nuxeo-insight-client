@@ -1,11 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.nuxeo.ai</groupId>
   <artifactId>nuxeo-insight-client</artifactId>
-  <version>0.0.0-11</version>
+  <version>1.0.0-SNAPSHOT</version>
 
   <name>Nuxeo Insight Client</name>
   <description>Nuxeo Insight REST SDK</description>
@@ -19,7 +18,7 @@
   <properties>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
-    <nuxeo.java.client>3.5.0</nuxeo.java.client>
+    <nuxeo.java.client>3.9.0</nuxeo.java.client>
     <javax.version>1.3.2</javax.version>
     <jsr305.version>3.0.2</jsr305.version>
     <javax.validation.version>1.0.0.GA</javax.validation.version>
