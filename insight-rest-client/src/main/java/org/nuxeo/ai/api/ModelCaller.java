@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static org.nuxeo.ai.Common.MODEL_ID_PARAM;
+import static org.nuxeo.ai.Common.MODEL_NAME_PARAM;
 import static org.nuxeo.ai.client.InsightClient.MAPPER;
 
 public class ModelCaller implements ModelResource {
@@ -103,10 +104,10 @@ public class ModelCaller implements ModelResource {
             });
         case PREDICT:
             Objects.requireNonNull(payload);
-            String modelName = (String) parameters.get(MODEL_ID_PARAM);
+            String modelName = (String) parameters.get(MODEL_NAME_PARAM);
             String datasource = (String) parameters.get(DATASOURCE_PARAM);
             String json = MAPPER.writeValueAsString(payload);
-            return (T) client.post(API.Model.DELTA.toPath(client.getProjectId(), modelName, datasource), json,
+            return (T) client.post(API.Model.PREDICT.toPath(client.getProjectId(), modelName, datasource), json,
                     response -> {
                         if (!response.isSuccessful() || response.body() == null) {
                             log.error("Failed to predict for project {}, payload {}, url {}, code {} and reason {}",

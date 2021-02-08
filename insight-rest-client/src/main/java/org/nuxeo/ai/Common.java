@@ -26,6 +26,8 @@ public final class Common {
 
     public static final String MODEL_ID_PARAM = "modelId";
 
+    public static final String MODEL_NAME_PARAM = "modelName";
+
     public static final String CORPORA_ID_PARAM = "corporaId";
 
     public static final String EXPORT_ID_PARAM = "exportId";

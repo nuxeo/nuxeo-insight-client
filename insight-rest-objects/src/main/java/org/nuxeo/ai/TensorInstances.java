@@ -33,7 +33,9 @@ import static org.nuxeo.ai.DataType.TEXT;
 /**
  * A JSON representation of Tensorflow instance parameters
  */
-public class TensorInstances {
+public class TensorInstances implements Serializable {
+
+    private static final long serialVersionUID = 202108021233428L;
 
     public final String docId;
 

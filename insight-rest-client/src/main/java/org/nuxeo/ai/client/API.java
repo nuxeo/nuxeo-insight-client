@@ -105,7 +105,7 @@ public class API {
             case DELTA:
                 return API_AI + project + "/model/" + id + "/corpusdelta";
             case PREDICT:
-                return API_AI + project + "/" + id + "/" + datasource + "/predict?datasource=" + datasource;
+                return API_AI + project + "/model/" + id + "/" + datasource + "/predict?datasource=" + datasource;
             default:
                 throw new UnsupportedPathException("Invalid API call for " + this.name());
             }

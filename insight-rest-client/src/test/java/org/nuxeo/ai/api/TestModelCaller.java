@@ -25,6 +25,7 @@ import com.github.tomakehurst.wiremock.extension.responsetemplating.ResponseTemp
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.junit.Rule;
 import org.junit.Test;
+import org.nuxeo.ai.TensorInstances;
 import org.nuxeo.ai.client.API;
 import org.nuxeo.ai.client.Authentication;
 import org.nuxeo.ai.client.InsightClient;
@@ -34,11 +35,13 @@ import org.nuxeo.client.objects.Documents;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.nuxeo.ai.Common.MODEL_ID_PARAM;
+import static org.nuxeo.ai.Common.MODEL_NAME_PARAM;
 import static org.nuxeo.ai.api.ModelCaller.DATASOURCE_PARAM;
 import static org.nuxeo.ai.api.ModelCaller.LABEL_PARAM;
 
@@ -89,6 +92,17 @@ public class TestModelCaller {
 
         Documents documents = client.getJSONFactory().readJSON(response, Documents.class);
         assertThat(documents).isNotNull();
+    }
+
+    @Test
+    public void shouldRunPredict() throws JsonProcessingException {
+        InsightClient client = getInsightClient();
+        Map<String, Serializable> params = new HashMap<>();
+        params.put(MODEL_NAME_PARAM, "testModel");
+        params.put(DATASOURCE_PARAM, "dev");
+        TensorInstances instances = new TensorInstances("a doc id", Collections.emptyMap());
+        String response = client.api(ModelResource.class).call(API.Model.PREDICT, params, instances);
+        assertThat(response).isNotEmpty().isNotEqualTo("{}");
     }
 
     private InsightClient getInsightClient() {
