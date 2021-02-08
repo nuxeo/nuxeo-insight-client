@@ -17,13 +17,21 @@
  *  Contributors:
  *       Andrei Nechaev
  */
-package org.nuxeo.ai.callers;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.Map;
+package org.nuxeo.ai;
 
-public interface Caller<T> {
+public final class Common {
 
-    Object call(T endpoint, Map<String, Serializable> parameters, Serializable payload) throws IOException;
+    public static final String UID = "uid";
+
+    public static final String MODEL_ID_PARAM = "modelId";
+
+    public static final String MODEL_NAME_PARAM = "modelName";
+
+    public static final String CORPORA_ID_PARAM = "corporaId";
+
+    public static final String EXPORT_ID_PARAM = "exportId";
+
+    private Common() {
+    }
 }

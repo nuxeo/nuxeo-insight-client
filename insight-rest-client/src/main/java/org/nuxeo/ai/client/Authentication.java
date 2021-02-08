@@ -17,11 +17,11 @@
  *  Contributors:
  *       Andrei Nechaev
  */
-
-package org.nuxeo.ai;
+package org.nuxeo.ai.client;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 public class Authentication {
 
@@ -32,19 +32,20 @@ public class Authentication {
     private final String secret;
 
     public Authentication(@Nonnull String username, @Nonnull String password) {
+        Objects.requireNonNull(username);
+        Objects.requireNonNull(password);
+
         this.username = username;
         this.secret = password;
         this.type = TYPE.BASIC;
     }
 
     public Authentication(@Nonnull String token) {
+        Objects.requireNonNull(token);
+
         this.username = null;
         this.secret = token;
         this.type = TYPE.TOKEN;
-    }
-
-    enum TYPE {
-        BASIC, TOKEN
     }
 
     @Nonnull
@@ -60,5 +61,9 @@ public class Authentication {
     @Nonnull
     public String getSecret() {
         return secret;
+    }
+
+    public enum TYPE {
+        BASIC, TOKEN
     }
 }
