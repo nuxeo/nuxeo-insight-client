@@ -20,16 +20,20 @@
 
 package org.nuxeo.ai;
 
-public final class Common {
+public enum DataType {
 
-    public static final String UID = "uid";
+    IMAGE, TEXT, CATEGORY;
 
-    public static final String MODEL_ID_PARAM = "modelId";
-
-    public static final String CORPORA_ID_PARAM = "corporaId";
-
-    public static final String EXPORT_ID_PARAM = "exportId";
-
-    private Common() {
+    public String shorten() {
+        switch (this) {
+        case TEXT:
+            return "txt";
+        case IMAGE:
+            return "img";
+        case CATEGORY:
+            return "cat";
+        default:
+            throw new UnsupportedOperationException("No such DataType " + this.name());
+        }
     }
 }

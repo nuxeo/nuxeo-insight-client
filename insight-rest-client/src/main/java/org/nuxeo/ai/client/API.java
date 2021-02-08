@@ -23,28 +23,24 @@ package org.nuxeo.ai.client;
 import org.nuxeo.ai.exception.UnsupportedPathException;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class API {
-
-    public static final String API_AI = "ai/";
-
-    public static final String API_EXPORT_AI = "ai_export/";
 
     public enum HttpMethod {
         GET, POST, PUT, DELETE
     }
 
-    public enum Export {
+    public enum Export implements Endpoint {
+
         INIT(HttpMethod.POST), ATTACH(HttpMethod.POST), BIND(HttpMethod.POST), DONE(HttpMethod.POST);
+
+        public static final String API_EXPORT_AI = "ai_export/";
 
         public final HttpMethod method;
 
         Export(HttpMethod method) {
             this.method = method;
-        }
-
-        public String lowerName() {
-            return this.name().toLowerCase();
         }
 
         /**
@@ -82,5 +78,41 @@ public class API {
                 throw new UnsupportedPathException("Invalid API call for " + this.name());
             }
         }
+    }
+
+    public enum Model implements Endpoint {
+        ALL, BY_DATASOURCE, PUBLISHED, DELTA, PREDICT;
+
+        public static final String API_AI = "ai/";
+
+        public final HttpMethod method = HttpMethod.GET;
+
+        /**
+         * Resolve path between
+         *
+         * @param project Id of a client
+         * @param id can be a datasource or a label
+         * @return {@link String} as uri
+         */
+        public String toPath(@Nonnull String project, @Nullable String id, @Nullable String datasource) {
+            switch (this) {
+            case ALL:
+                return API_AI + project + "/" + "models?properties=ai_model";
+            case BY_DATASOURCE:
+                return API_AI + project + "/" + "models?properties=ai_model&publishState=published&label=" + datasource;
+            case PUBLISHED:
+                return API_AI + project + "/" + "models?properties=ai_model&datasource=" + datasource;
+            case DELTA:
+                return API_AI + project + "/model/" + id + "/corpusdelta";
+            case PREDICT:
+                return API_AI + project + "/" + id + "/" + datasource + "/predict?datasource=" + datasource;
+            default:
+                throw new UnsupportedPathException("Invalid API call for " + this.name());
+            }
+        }
+    }
+
+    public interface Endpoint {
+
     }
 }

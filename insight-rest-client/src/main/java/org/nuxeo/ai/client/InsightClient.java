@@ -29,9 +29,12 @@ import org.nuxeo.ai.LogInterceptor;
 import org.nuxeo.ai.ResponseHandler;
 import org.nuxeo.ai.api.ExportCaller;
 import org.nuxeo.ai.api.ExportResource;
+import org.nuxeo.ai.api.ModelCaller;
+import org.nuxeo.ai.api.ModelResource;
 import org.nuxeo.ai.api.Resource;
 import org.nuxeo.ai.exception.ConfigurationException;
 import org.nuxeo.client.NuxeoClient;
+import org.nuxeo.client.marshaller.NuxeoConverterFactory;
 import org.nuxeo.client.spi.auth.BasicAuthInterceptor;
 import org.nuxeo.client.spi.auth.TokenAuthInterceptor;
 
@@ -60,6 +63,15 @@ public class InsightClient {
     @Nonnull
     public InsightConfiguration getConfiguration() {
         return configuration;
+    }
+
+    @Nonnull
+    public NuxeoConverterFactory getJSONFactory() {
+        return client.getConverterFactory();
+    }
+
+    public void getBatchUpload(int chunkSize) {
+        client.batchUploadManager().createBatch().enableChunk().chunkSize(chunkSize);
     }
 
     public void connect() throws ConfigurationException {
@@ -115,6 +127,8 @@ public class InsightClient {
     public <T extends Resource> T api(Class<T> type) {
         if (type.isAssignableFrom(ExportResource.class)) {
             return (T) new ExportCaller(this);
+        } else if (type.isAssignableFrom(ModelResource.class)) {
+            return (T) new ModelCaller(this);
         } else {
             return null;
         }

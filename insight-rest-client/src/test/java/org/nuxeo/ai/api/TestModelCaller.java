@@ -20,71 +20,75 @@
 
 package org.nuxeo.ai.api;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.tomakehurst.wiremock.extension.responsetemplating.ResponseTemplateTransformer;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.nuxeo.ai.CorporaParameters;
 import org.nuxeo.ai.client.API;
 import org.nuxeo.ai.client.Authentication;
 import org.nuxeo.ai.client.InsightClient;
 import org.nuxeo.ai.client.InsightConfiguration;
+import org.nuxeo.client.objects.Documents;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.nuxeo.ai.Common.CORPORA_ID_PARAM;
-import static org.nuxeo.ai.Common.EXPORT_ID_PARAM;
 import static org.nuxeo.ai.Common.MODEL_ID_PARAM;
+import static org.nuxeo.ai.api.ModelCaller.DATASOURCE_PARAM;
+import static org.nuxeo.ai.api.ModelCaller.LABEL_PARAM;
 
-public class TestExportCaller {
+public class TestModelCaller {
 
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(
             options().extensions(new ResponseTemplateTransformer(true)).port(5089));
 
     @Test
-    public void shouldCallInitExportAPI() throws IOException {
+    public void shouldGetALLModels() throws JsonProcessingException {
         InsightClient client = getInsightClient();
-        CorporaParameters corporaParameters = new CorporaParameters();
-        Map<String, Serializable> params = new HashMap<>();
-        String uuid = client.api(ExportResource.class).call(API.Export.INIT, params, corporaParameters);
-        assertThat(uuid).isNotEmpty();
+        String response = client.api(ModelResource.class).call(API.Model.ALL, Collections.emptyMap());
+        assertThat(response).isNotNull().isNotEqualTo("{}");
+        Documents documents = client.getJSONFactory().readJSON(response, Documents.class);
+        assertThat(documents).isNotNull();
     }
 
     @Test
-    public void shouldCallBindExportAPI() throws IOException {
+    public void shouldGetModelByDatasource() throws IOException {
         InsightClient client = getInsightClient();
-        CorporaParameters corporaParameters = new CorporaParameters();
-        Map<String, Serializable> params = new HashMap<>();
-        params.put(MODEL_ID_PARAM, "e67ee0e8-1bef-4fb7-9966-1d14081221");
-        params.put(CORPORA_ID_PARAM, "e67ee0e8-1bef-4fb7-9966-1d1408ce67a0");
-        boolean bound = client.api(ExportResource.class).call(API.Export.BIND, params, corporaParameters);
-        assertThat(bound).isTrue();
+        Map<String, Serializable> params = Collections.singletonMap(DATASOURCE_PARAM, "dev");
+        String response = client.api(ModelResource.class).call(API.Model.BY_DATASOURCE, params);
+        assertThat(response).isNotNull().isNotEqualTo("{}");
+
+        Documents documents = client.getJSONFactory().readJSON(response, Documents.class);
+        assertThat(documents).isNotNull();
     }
 
     @Test
-    public void shouldCallAttachExportAPI() throws IOException {
+    public void shouldGetModelsByLabel() throws JsonProcessingException {
         InsightClient client = getInsightClient();
-        CorporaParameters corporaParameters = new CorporaParameters();
-        Map<String, Serializable> params = new HashMap<>();
-        params.put(CORPORA_ID_PARAM, "e67ee0e8-1bef-4fb7-9966-1d14081221");
-        String uuid = client.api(ExportResource.class).call(API.Export.ATTACH, params, corporaParameters);
-        assertThat(uuid).isNotEmpty();
+        Map<String, Serializable> params = Collections.singletonMap(LABEL_PARAM, "dev");
+        String response = client.api(ModelResource.class).call(API.Model.PUBLISHED, params);
+        assertThat(response).isNotNull().isNotEqualTo("{}");
+
+        Documents documents = client.getJSONFactory().readJSON(response, Documents.class);
+        assertThat(documents).isNotNull();
     }
 
     @Test
-    public void shouldCallDoneExportAPI() throws IOException {
+    public void shouldGetDelta() throws JsonProcessingException {
         InsightClient client = getInsightClient();
-        CorporaParameters corporaParameters = new CorporaParameters();
-        Map<String, Serializable> params = new HashMap<>();
-        params.put(EXPORT_ID_PARAM, "e67ee0e8-1bef-4fb7-9966-1d1408ce67a0");
-        boolean bound = client.api(ExportResource.class).call(API.Export.DONE, params, corporaParameters);
-        assertThat(bound).isTrue();
+        Map<String, Serializable> params = Collections.singletonMap(MODEL_ID_PARAM,
+                "6b93bace-4ed3-408f-8efe-79a8dd287199");
+        String response = client.api(ModelResource.class).call(API.Model.DELTA, params);
+        assertThat(response).isNotNull().isNotEqualTo("{}");
+
+        Documents documents = client.getJSONFactory().readJSON(response, Documents.class);
+        assertThat(documents).isNotNull();
     }
 
     private InsightClient getInsightClient() {

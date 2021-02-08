@@ -39,19 +39,16 @@ import java.util.Map;
 import java.util.Objects;
 
 import static javax.ws.rs.core.Response.Status.OK;
+import static org.nuxeo.ai.Common.CORPORA_ID_PARAM;
+import static org.nuxeo.ai.Common.EXPORT_ID_PARAM;
+import static org.nuxeo.ai.Common.MODEL_ID_PARAM;
 import static org.nuxeo.ai.client.InsightClient.MAPPER;
 
 public class ExportCaller implements ExportResource {
 
-    public static final String MODEL_ID_PARAM = "modelId";
-
-    public static final String CORPORA_ID_PARAM = "corporaId";
-
     public static final String CORPUS_PARAM = "corpus";
 
-    public static final String EXPORT_ID_PARAM = "exportId";
-
-    public final Logger log = LogManager.getLogger(ExportCaller.class);
+    private final Logger log = LogManager.getLogger(ExportCaller.class);
 
     private final InsightClient client;
 
