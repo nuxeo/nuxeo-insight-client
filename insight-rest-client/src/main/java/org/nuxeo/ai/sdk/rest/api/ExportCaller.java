@@ -18,19 +18,18 @@
  *       Andrei Nechaev
  */
 
-package org.nuxeo.ai.api;
+package org.nuxeo.ai.sdk.rest.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import okhttp3.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.nuxeo.ai.Common;
-import org.nuxeo.ai.CorporaParameters;
-import org.nuxeo.ai.client.API;
-import org.nuxeo.ai.client.InsightClient;
-import org.nuxeo.ai.exception.ConfigurationException;
-import org.nuxeo.ai.exception.InvalidEndpointException;
+import org.nuxeo.ai.sdk.objects.CorporaParameters;
+import org.nuxeo.ai.sdk.rest.client.API;
+import org.nuxeo.ai.sdk.rest.client.InsightClient;
+import org.nuxeo.ai.sdk.rest.exception.ConfigurationException;
+import org.nuxeo.ai.sdk.rest.exception.InvalidEndpointException;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -39,10 +38,11 @@ import java.util.Map;
 import java.util.Objects;
 
 import static javax.ws.rs.core.Response.Status.OK;
-import static org.nuxeo.ai.Common.CORPORA_ID_PARAM;
-import static org.nuxeo.ai.Common.EXPORT_ID_PARAM;
-import static org.nuxeo.ai.Common.MODEL_ID_PARAM;
-import static org.nuxeo.ai.client.InsightClient.MAPPER;
+import static org.nuxeo.ai.sdk.rest.Common.CORPORA_ID_PARAM;
+import static org.nuxeo.ai.sdk.rest.Common.EXPORT_ID_PARAM;
+import static org.nuxeo.ai.sdk.rest.Common.MODEL_ID_PARAM;
+import static org.nuxeo.ai.sdk.rest.Common.UID;
+import static org.nuxeo.ai.sdk.rest.client.InsightClient.MAPPER;
 
 public class ExportCaller implements ExportResource {
 
@@ -93,12 +93,12 @@ public class ExportCaller implements ExportResource {
             }
 
             JsonNode node = response.body() != null ? MAPPER.readTree(response.body().byteStream()) : null;
-            if (node == null || !node.has(Common.UID)) {
+            if (node == null || !node.has(UID)) {
                 log.error("Corpora for project {} and id {} wasn't created; payload {}", client.getProjectId(),
                         corporaId, payload);
                 return null;
             } else {
-                String corpusId = node.get(Common.UID).asText();
+                String corpusId = node.get(UID).asText();
                 log.info("Corpora {} created for project {}, payload {}", corpusId, client.getProjectId(), payload);
                 return corpusId;
             }

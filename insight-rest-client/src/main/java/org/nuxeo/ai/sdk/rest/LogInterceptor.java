@@ -17,7 +17,7 @@
  *  Contributors:
  *       Andrei Nechaev
  */
-package org.nuxeo.ai;
+package org.nuxeo.ai.sdk.rest;
 
 import okhttp3.Connection;
 import okhttp3.Headers;

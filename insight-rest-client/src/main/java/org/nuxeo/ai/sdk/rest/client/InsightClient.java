@@ -18,21 +18,21 @@
  *       Andrei Nechaev
  */
 
-package org.nuxeo.ai.client;
+package org.nuxeo.ai.sdk.rest.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.nuxeo.ai.LogInterceptor;
-import org.nuxeo.ai.ResponseHandler;
-import org.nuxeo.ai.api.ExportCaller;
-import org.nuxeo.ai.api.ExportResource;
-import org.nuxeo.ai.api.ModelCaller;
-import org.nuxeo.ai.api.ModelResource;
-import org.nuxeo.ai.api.Resource;
-import org.nuxeo.ai.exception.ConfigurationException;
+import org.nuxeo.ai.sdk.rest.LogInterceptor;
+import org.nuxeo.ai.sdk.rest.ResponseHandler;
+import org.nuxeo.ai.sdk.rest.api.ExportCaller;
+import org.nuxeo.ai.sdk.rest.api.ExportResource;
+import org.nuxeo.ai.sdk.rest.api.ModelCaller;
+import org.nuxeo.ai.sdk.rest.api.ModelResource;
+import org.nuxeo.ai.sdk.rest.api.Resource;
+import org.nuxeo.ai.sdk.rest.exception.ConfigurationException;
 import org.nuxeo.client.NuxeoClient;
 import org.nuxeo.client.marshaller.NuxeoConverterFactory;
 import org.nuxeo.client.spi.auth.BasicAuthInterceptor;

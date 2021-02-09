@@ -17,12 +17,15 @@
  *  Contributors:
  *       Andrei Nechaev
  */
+package org.nuxeo.ai.sdk.rest.exception;
 
-package org.nuxeo.ai.api;
+public class UnsupportedPathException extends RuntimeException {
 
-/**
- * Marker resource for API endpoints
- */
-public interface Resource {
+    public UnsupportedPathException(String message) {
+        super(message);
+    }
 
+    public UnsupportedPathException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

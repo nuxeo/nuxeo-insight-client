@@ -18,20 +18,16 @@
  *       Andrei Nechaev
  */
 
-package org.nuxeo.ai;
+package org.nuxeo.ai.sdk.rest;
 
-public final class Common {
+import okhttp3.Response;
 
-    public static final String UID = "uid";
+import java.io.IOException;
 
-    public static final String MODEL_ID_PARAM = "modelId";
-
-    public static final String MODEL_NAME_PARAM = "modelName";
-
-    public static final String CORPORA_ID_PARAM = "corporaId";
-
-    public static final String EXPORT_ID_PARAM = "exportId";
-
-    private Common() {
-    }
+/**
+ * A callback to handle a response from a call to the cloud.
+ */
+@FunctionalInterface
+public interface ResponseHandler<T> {
+    T handleResponse(Response response) throws IOException;
 }

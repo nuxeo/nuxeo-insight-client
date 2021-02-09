@@ -18,19 +18,20 @@
  *       Andrei Nechaev
  */
 
-package org.nuxeo.ai.api;
+package org.nuxeo.ai.sdk.rest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.nuxeo.ai.client.API;
+public final class Common {
 
-import java.io.Serializable;
-import java.util.Map;
+    public static final String UID = "uid";
 
-public interface ModelResource extends Resource {
+    public static final String MODEL_ID_PARAM = "modelId";
 
-    <T> T call(API.Model endpoint, Map<String, Serializable> parameters)
-            throws JsonProcessingException;
+    public static final String MODEL_NAME_PARAM = "modelName";
 
-    <T> T call(API.Model endpoint, Map<String, Serializable> parameters, Serializable payload)
-            throws JsonProcessingException;
+    public static final String CORPORA_ID_PARAM = "corporaId";
+
+    public static final String EXPORT_ID_PARAM = "exportId";
+
+    private Common() {
+    }
 }

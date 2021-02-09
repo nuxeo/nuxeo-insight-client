@@ -17,15 +17,24 @@
  *  Contributors:
  *       Andrei Nechaev
  */
-package org.nuxeo.ai.exception;
 
-public class UnsupportedPathException extends RuntimeException {
+package org.nuxeo.ai.sdk.rest;
 
-    public UnsupportedPathException(String message) {
-        super(message);
-    }
+import org.junit.Test;
+import org.nuxeo.ai.sdk.rest.client.Authentication;
 
-    public UnsupportedPathException(String message, Throwable cause) {
-        super(message, cause);
+import static org.assertj.core.api.Assertions.assertThat;
+
+public class TestAuthentication {
+
+    @Test
+    public void shouldCrateAuthentication() {
+        Authentication basic = new Authentication("user", "password");
+        assertThat(basic).isNotNull();
+        assertThat(basic.getType()).isEqualTo(Authentication.TYPE.BASIC);
+
+        Authentication token = new Authentication("token");
+        assertThat(token).isNotNull();
+        assertThat(token.getType()).isEqualTo(Authentication.TYPE.TOKEN);
     }
 }

@@ -17,7 +17,7 @@
  *  Contributors:
  *       Andrei Nechaev
  */
-package org.nuxeo.ai.client;
+package org.nuxeo.ai.sdk.rest.client;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

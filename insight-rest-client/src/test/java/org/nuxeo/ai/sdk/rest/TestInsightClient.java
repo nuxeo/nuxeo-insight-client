@@ -17,12 +17,12 @@
  *  Contributors:
  *       Andrei Nechaev
  */
-package org.nuxeo.ai;
+package org.nuxeo.ai.sdk.rest;
 
 import org.junit.Test;
-import org.nuxeo.ai.client.Authentication;
-import org.nuxeo.ai.client.InsightClient;
-import org.nuxeo.ai.client.InsightConfiguration;
+import org.nuxeo.ai.sdk.rest.client.Authentication;
+import org.nuxeo.ai.sdk.rest.client.InsightClient;
+import org.nuxeo.ai.sdk.rest.client.InsightConfiguration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

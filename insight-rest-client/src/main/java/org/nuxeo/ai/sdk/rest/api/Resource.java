@@ -18,16 +18,11 @@
  *       Andrei Nechaev
  */
 
-package org.nuxeo.ai;
-
-import okhttp3.Response;
-
-import java.io.IOException;
+package org.nuxeo.ai.sdk.rest.api;
 
 /**
- * A callback to handle a response from a call to the cloud.
+ * Marker resource for API endpoints
  */
-@FunctionalInterface
-public interface ResponseHandler<T> {
-    T handleResponse(Response response) throws IOException;
+public interface Resource {
+
 }

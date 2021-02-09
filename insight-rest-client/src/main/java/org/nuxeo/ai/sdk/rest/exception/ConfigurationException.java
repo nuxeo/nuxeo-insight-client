@@ -17,15 +17,15 @@
  *  Contributors:
  *       Andrei Nechaev
  */
-package org.nuxeo.ai.exception;
+package org.nuxeo.ai.sdk.rest.exception;
 
-public class InvalidEndpointException extends RuntimeException {
+public class ConfigurationException extends RuntimeException {
 
-    public InvalidEndpointException(String message) {
+    public ConfigurationException(String message) {
         super(message);
     }
 
-    public InvalidEndpointException(String message, Throwable cause) {
+    public ConfigurationException(String message, Throwable cause) {
         super(message, cause);
     }
 }

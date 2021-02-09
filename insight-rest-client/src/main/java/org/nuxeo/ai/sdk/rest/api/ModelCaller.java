@@ -18,27 +18,25 @@
  *       Andrei Nechaev
  */
 
-package org.nuxeo.ai.api;
+package org.nuxeo.ai.sdk.rest.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.nuxeo.ai.client.API;
-import org.nuxeo.ai.client.InsightClient;
-import org.nuxeo.ai.exception.ConfigurationException;
-import org.nuxeo.ai.exception.InvalidEndpointException;
+import org.nuxeo.ai.sdk.rest.client.API;
+import org.nuxeo.ai.sdk.rest.client.InsightClient;
+import org.nuxeo.ai.sdk.rest.exception.ConfigurationException;
+import org.nuxeo.ai.sdk.rest.exception.InvalidEndpointException;
 
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
 
-import static org.nuxeo.ai.Common.MODEL_ID_PARAM;
-import static org.nuxeo.ai.Common.MODEL_NAME_PARAM;
-import static org.nuxeo.ai.client.InsightClient.MAPPER;
+import static org.nuxeo.ai.sdk.rest.Common.MODEL_ID_PARAM;
+import static org.nuxeo.ai.sdk.rest.Common.MODEL_NAME_PARAM;
+import static org.nuxeo.ai.sdk.rest.client.InsightClient.MAPPER;
 
 public class ModelCaller implements ModelResource {
-
-    public static final String EMPTY_JSON = "{}";
 
     public static final String LABEL_PARAM = "label";
 
@@ -69,7 +67,7 @@ public class ModelCaller implements ModelResource {
         case ALL:
             return (T) client.get(API.Model.ALL.toPath(client.getProjectId(), null, null), response -> {
                 if (response.body() == null) {
-                    return "{}";
+                    return null;
                 }
 
                 return response.body().string();
@@ -78,7 +76,7 @@ public class ModelCaller implements ModelResource {
             String label = (String) parameters.get(LABEL_PARAM);
             return (T) client.get(API.Model.PUBLISHED.toPath(client.getProjectId(), null, label), response -> {
                 if (response.body() == null) {
-                    return EMPTY_JSON;
+                    return null;
                 }
 
                 return response.body().string();
@@ -87,7 +85,7 @@ public class ModelCaller implements ModelResource {
             String datasource = (String) parameters.get(DATASOURCE_PARAM);
             return (T) client.get(API.Model.BY_DATASOURCE.toPath(client.getProjectId(), null, datasource), response -> {
                 if (response.body() == null) {
-                    return EMPTY_JSON;
+                    return null;
                 }
 
                 return response.body().string();
@@ -97,7 +95,7 @@ public class ModelCaller implements ModelResource {
             String modelId = (String) parameters.get(MODEL_ID_PARAM);
             return (T) client.get(API.Model.DELTA.toPath(client.getProjectId(), modelId, null), response -> {
                 if (response.body() == null) {
-                    return EMPTY_JSON;
+                    return null;
                 }
 
                 return response.body().string();

@@ -18,9 +18,9 @@
  *       Andrei Nechaev
  */
 
-package org.nuxeo.ai.client;
+package org.nuxeo.ai.sdk.rest.client;
 
-import org.nuxeo.ai.exception.UnsupportedPathException;
+import org.nuxeo.ai.sdk.rest.exception.UnsupportedPathException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

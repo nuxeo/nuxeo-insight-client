@@ -18,23 +18,22 @@
  *       Andrei Nechaev
  */
 
-package org.nuxeo.ai;
+package org.nuxeo.ai.sdk.objects;
 
-import org.junit.Test;
-import org.nuxeo.ai.client.Authentication;
+public enum DataType {
 
-import static org.assertj.core.api.Assertions.assertThat;
+    IMAGE, TEXT, CATEGORY;
 
-public class TestAuthentication {
-
-    @Test
-    public void shouldCrateAuthentication() {
-        Authentication basic = new Authentication("user", "password");
-        assertThat(basic).isNotNull();
-        assertThat(basic.getType()).isEqualTo(Authentication.TYPE.BASIC);
-
-        Authentication token = new Authentication("token");
-        assertThat(token).isNotNull();
-        assertThat(token.getType()).isEqualTo(Authentication.TYPE.TOKEN);
+    public String shorten() {
+        switch (this) {
+        case TEXT:
+            return "txt";
+        case IMAGE:
+            return "img";
+        case CATEGORY:
+            return "cat";
+        default:
+            throw new UnsupportedOperationException("No such DataType " + this.name());
+        }
     }
 }
