@@ -17,7 +17,7 @@
  *  Contributors:
  *       Andrei Nechaev
  */
-package org.nuxeo.ai;
+package org.nuxeo.ai.sdk.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -26,9 +26,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static org.nuxeo.ai.DataType.CATEGORY;
-import static org.nuxeo.ai.DataType.IMAGE;
-import static org.nuxeo.ai.DataType.TEXT;
+import static org.nuxeo.ai.sdk.objects.DataType.CATEGORY;
+import static org.nuxeo.ai.sdk.objects.DataType.IMAGE;
+import static org.nuxeo.ai.sdk.objects.DataType.TEXT;
 
 /**
  * A JSON representation of Tensorflow instance parameters

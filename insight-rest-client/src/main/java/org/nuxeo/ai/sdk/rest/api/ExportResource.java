@@ -18,22 +18,17 @@
  *       Andrei Nechaev
  */
 
-package org.nuxeo.ai;
+package org.nuxeo.ai.sdk.rest.api;
 
-public enum DataType {
+import org.nuxeo.ai.sdk.rest.client.API;
 
-    IMAGE, TEXT, CATEGORY;
+import javax.annotation.Nullable;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.Map;
 
-    public String shorten() {
-        switch (this) {
-        case TEXT:
-            return "txt";
-        case IMAGE:
-            return "img";
-        case CATEGORY:
-            return "cat";
-        default:
-            throw new UnsupportedOperationException("No such DataType " + this.name());
-        }
-    }
+public interface ExportResource extends Resource {
+
+    @Nullable
+    <T> T call(API.Export endpoint, Map<String, Serializable> parameters, Serializable payload) throws IOException;
 }

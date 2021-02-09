@@ -17,7 +17,7 @@
  *  Contributors:
  *       Andrei Nechaev
  */
-package org.nuxeo.ai.client;
+package org.nuxeo.ai.sdk.rest.client;
 
 import java.time.Duration;
 import java.util.Objects;

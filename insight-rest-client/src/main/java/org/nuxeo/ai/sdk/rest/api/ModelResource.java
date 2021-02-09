@@ -18,15 +18,22 @@
  *       Andrei Nechaev
  */
 
-package org.nuxeo.ai.api;
+package org.nuxeo.ai.sdk.rest.api;
 
-import org.nuxeo.ai.client.API;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.nuxeo.ai.sdk.rest.client.API;
 
-import java.io.IOException;
+import javax.annotation.Nullable;
 import java.io.Serializable;
 import java.util.Map;
 
-public interface ExportResource extends Resource {
+public interface ModelResource extends Resource {
 
-    <T> T call(API.Export endpoint, Map<String, Serializable> parameters, Serializable payload) throws IOException;
+    @Nullable
+    <T> T call(API.Model endpoint, Map<String, Serializable> parameters)
+            throws JsonProcessingException;
+
+    @Nullable
+    <T> T call(API.Model endpoint, Map<String, Serializable> parameters, Serializable payload)
+            throws JsonProcessingException;
 }
