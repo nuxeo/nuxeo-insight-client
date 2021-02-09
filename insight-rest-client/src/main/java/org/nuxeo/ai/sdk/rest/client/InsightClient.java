@@ -28,13 +28,12 @@ import org.apache.logging.log4j.Logger;
 import org.nuxeo.ai.sdk.rest.LogInterceptor;
 import org.nuxeo.ai.sdk.rest.ResponseHandler;
 import org.nuxeo.ai.sdk.rest.api.ExportCaller;
-import org.nuxeo.ai.sdk.rest.api.ExportResource;
 import org.nuxeo.ai.sdk.rest.api.ModelCaller;
-import org.nuxeo.ai.sdk.rest.api.ModelResource;
 import org.nuxeo.ai.sdk.rest.api.Resource;
 import org.nuxeo.ai.sdk.rest.exception.ConfigurationException;
 import org.nuxeo.client.NuxeoClient;
 import org.nuxeo.client.marshaller.NuxeoConverterFactory;
+import org.nuxeo.client.objects.upload.BatchUpload;
 import org.nuxeo.client.spi.auth.BasicAuthInterceptor;
 import org.nuxeo.client.spi.auth.TokenAuthInterceptor;
 
@@ -70,8 +69,8 @@ public class InsightClient {
         return client.getConverterFactory();
     }
 
-    public void getBatchUpload(int chunkSize) {
-        client.batchUploadManager().createBatch().enableChunk().chunkSize(chunkSize);
+    public BatchUpload getBatchUpload(int chunkSize) {
+        return client.batchUploadManager().createBatch().enableChunk().chunkSize(chunkSize);
     }
 
     public void connect() throws ConfigurationException {
@@ -124,11 +123,11 @@ public class InsightClient {
     }
 
     @SuppressWarnings("unchecked") // TODO: check casting
-    public <T extends Resource> T api(Class<T> type) {
-        if (type.isAssignableFrom(ExportResource.class)) {
-            return (T) new ExportCaller(this);
-        } else if (type.isAssignableFrom(ModelResource.class)) {
-            return (T) new ModelCaller(this);
+    public <T extends API.Endpoint> Resource<T> api(T type) {
+        if (type instanceof API.Export) {
+            return (Resource<T>) new ExportCaller(this, (API.Export) type);
+        } else if (type instanceof API.Model) {
+            return (Resource<T>) new ModelCaller(this, (API.Model) type);
         } else {
             return null;
         }

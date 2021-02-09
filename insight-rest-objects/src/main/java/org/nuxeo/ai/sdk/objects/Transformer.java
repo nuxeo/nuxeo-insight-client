@@ -18,17 +18,10 @@
  *       Andrei Nechaev
  */
 
-package org.nuxeo.ai.sdk.rest.api;
+package org.nuxeo.ai.sdk.objects;
 
-import org.nuxeo.ai.sdk.rest.client.API;
+@FunctionalInterface
+public interface Transformer<T> {
 
-import javax.annotation.Nullable;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.Map;
-
-public interface ExportResource extends Resource {
-
-    @Nullable
-    <T> T call(API.Export endpoint, Map<String, Serializable> parameters, Serializable payload) throws IOException;
+    T transform();
 }
