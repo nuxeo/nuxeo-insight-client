@@ -20,7 +20,6 @@
 
 package org.nuxeo.ai.sdk.rest.api;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.tomakehurst.wiremock.extension.responsetemplating.ResponseTemplateTransformer;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.junit.Rule;
@@ -52,9 +51,9 @@ public class TestModelCaller {
             options().extensions(new ResponseTemplateTransformer(true)).port(5089));
 
     @Test
-    public void shouldGetALLModels() throws JsonProcessingException {
+    public void shouldGetALLModels() throws IOException {
         InsightClient client = getInsightClient();
-        String response = client.api(ModelResource.class).call(API.Model.ALL, Collections.emptyMap());
+        String response = client.api(API.Model.ALL).call(Collections.emptyMap());
         assertThat(response).isNotNull().isNotEqualTo("{}");
         Documents documents = client.getJSONFactory().readJSON(response, Documents.class);
         assertThat(documents).isNotNull();
@@ -63,8 +62,7 @@ public class TestModelCaller {
     @Test
     public void shouldGetModelByDatasource() throws IOException {
         InsightClient client = getInsightClient();
-        Map<String, Serializable> params = Collections.singletonMap(DATASOURCE_PARAM, "dev");
-        String response = client.api(ModelResource.class).call(API.Model.BY_DATASOURCE, params);
+        String response = client.api(API.Model.BY_DATASOURCE).call(Collections.emptyMap());
         assertThat(response).isNotNull().isNotEqualTo("{}");
 
         Documents documents = client.getJSONFactory().readJSON(response, Documents.class);
@@ -72,10 +70,10 @@ public class TestModelCaller {
     }
 
     @Test
-    public void shouldGetModelsByLabel() throws JsonProcessingException {
+    public void shouldGetModelsByLabel() throws IOException {
         InsightClient client = getInsightClient();
         Map<String, Serializable> params = Collections.singletonMap(LABEL_PARAM, "dev");
-        String response = client.api(ModelResource.class).call(API.Model.PUBLISHED, params);
+        String response = client.api(API.Model.PUBLISHED).call(params);
         assertThat(response).isNotNull().isNotEqualTo("{}");
 
         Documents documents = client.getJSONFactory().readJSON(response, Documents.class);
@@ -83,11 +81,11 @@ public class TestModelCaller {
     }
 
     @Test
-    public void shouldGetDelta() throws JsonProcessingException {
+    public void shouldGetDelta() throws IOException {
         InsightClient client = getInsightClient();
         Map<String, Serializable> params = Collections.singletonMap(MODEL_ID_PARAM,
                 "6b93bace-4ed3-408f-8efe-79a8dd287199");
-        String response = client.api(ModelResource.class).call(API.Model.DELTA, params);
+        String response = client.api(API.Model.DELTA).call(params);
         assertThat(response).isNotNull().isNotEqualTo("{}");
 
         Documents documents = client.getJSONFactory().readJSON(response, Documents.class);
@@ -95,13 +93,13 @@ public class TestModelCaller {
     }
 
     @Test
-    public void shouldRunPredict() throws JsonProcessingException {
+    public void shouldRunPredict() throws IOException {
         InsightClient client = getInsightClient();
         Map<String, Serializable> params = new HashMap<>();
         params.put(MODEL_NAME_PARAM, "testModel");
         params.put(DATASOURCE_PARAM, "dev");
         TensorInstances instances = new TensorInstances("a doc id", Collections.emptyMap());
-        String response = client.api(ModelResource.class).call(API.Model.PREDICT, params, instances);
+        String response = client.api(API.Model.PREDICT).call(params, instances);
         assertThat(response).isNotEmpty().isNotEqualTo("{}");
     }
 

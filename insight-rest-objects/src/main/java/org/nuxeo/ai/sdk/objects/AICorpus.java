@@ -21,13 +21,16 @@ package org.nuxeo.ai.sdk.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 /**
  * A POJO for AI_Corpus document in AI cloud
  */
-public class AICorpus {
+public class AICorpus implements Serializable {
+
+    private static final long serialVersionUID = 92021021510821L;
 
     protected static final String entity = "document";
 

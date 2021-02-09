@@ -36,7 +36,7 @@ import static org.nuxeo.ai.sdk.rest.Common.MODEL_ID_PARAM;
 import static org.nuxeo.ai.sdk.rest.Common.MODEL_NAME_PARAM;
 import static org.nuxeo.ai.sdk.rest.client.InsightClient.MAPPER;
 
-public class ModelCaller implements ModelResource {
+public class ModelCaller implements Resource<API.Model> {
 
     public static final String LABEL_PARAM = "label";
 
@@ -46,24 +46,27 @@ public class ModelCaller implements ModelResource {
 
     private final InsightClient client;
 
-    public ModelCaller(InsightClient client) {
+    private final API.Model type;
+
+    public ModelCaller(InsightClient client, API.Model type) {
         this.client = client;
+        this.type = type;
     }
 
     @Override
-    public <T> T call(API.Model endpoint, Map<String, Serializable> parameters) throws JsonProcessingException {
-        return call(endpoint, parameters, null);
+    public <T> T call(Map<String, Serializable> parameters) throws JsonProcessingException {
+        return call(parameters, null);
     }
 
     @Override
     @SuppressWarnings("unchecked") // TODO: review casting
-    public <T> T call(API.Model endpoint, Map<String, Serializable> parameters, Serializable payload)
+    public <T> T call(Map<String, Serializable> parameters, Serializable payload)
             throws JsonProcessingException {
         if (client == null || !client.isConnected()) {
             throw new ConfigurationException("No active client");
         }
 
-        switch (endpoint) {
+        switch (this.type) {
         case ALL:
             return (T) client.get(API.Model.ALL.toPath(client.getProjectId(), null, null), response -> {
                 if (response.body() == null) {
@@ -82,8 +85,8 @@ public class ModelCaller implements ModelResource {
                 return response.body().string();
             });
         case BY_DATASOURCE: {
-            String datasource = (String) parameters.get(DATASOURCE_PARAM);
-            return (T) client.get(API.Model.BY_DATASOURCE.toPath(client.getProjectId(), null, datasource), response -> {
+            return (T) client.get(API.Model.BY_DATASOURCE.toPath(client.getProjectId(), null,
+                    client.getConfiguration().getDatasource()), response -> {
                 if (response.body() == null) {
                     return null;
                 }
@@ -117,7 +120,7 @@ public class ModelCaller implements ModelResource {
                         return response.body().string();
                     });
         default:
-            throw new InvalidEndpointException("No such endpoint " + endpoint.name());
+            throw new InvalidEndpointException("No such endpoint " + this.type.name());
         }
     }
 }

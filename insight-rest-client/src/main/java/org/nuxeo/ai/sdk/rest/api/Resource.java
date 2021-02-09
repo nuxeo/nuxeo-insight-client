@@ -20,9 +20,21 @@
 
 package org.nuxeo.ai.sdk.rest.api;
 
+import org.nuxeo.ai.sdk.rest.client.API;
+
+import javax.annotation.Nullable;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.Map;
+
 /**
  * Marker resource for API endpoints
  */
-public interface Resource {
+public interface Resource<API extends org.nuxeo.ai.sdk.rest.client.API.Endpoint> {
 
+    @Nullable
+    <T> T call(Map<String, Serializable> parameters) throws IOException;
+
+    @Nullable
+    <T> T call(Map<String, Serializable> parameters, Serializable payload) throws IOException;
 }

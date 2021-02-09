@@ -24,6 +24,7 @@ import com.github.tomakehurst.wiremock.extension.responsetemplating.ResponseTemp
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.junit.Rule;
 import org.junit.Test;
+import org.nuxeo.ai.sdk.objects.AICorpus;
 import org.nuxeo.ai.sdk.objects.CorporaParameters;
 import org.nuxeo.ai.sdk.rest.client.API;
 import org.nuxeo.ai.sdk.rest.client.Authentication;
@@ -40,6 +41,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.nuxeo.ai.sdk.rest.Common.CORPORA_ID_PARAM;
 import static org.nuxeo.ai.sdk.rest.Common.EXPORT_ID_PARAM;
 import static org.nuxeo.ai.sdk.rest.Common.MODEL_ID_PARAM;
+import static org.nuxeo.ai.sdk.rest.client.API.Export.BIND;
 
 public class TestExportCaller {
 
@@ -52,39 +54,37 @@ public class TestExportCaller {
         InsightClient client = getInsightClient();
         CorporaParameters corporaParameters = new CorporaParameters();
         Map<String, Serializable> params = new HashMap<>();
-        String uuid = client.api(ExportResource.class).call(API.Export.INIT, params, corporaParameters);
+        String uuid = client.api(API.Export.INIT).call(params, corporaParameters);
         assertThat(uuid).isNotEmpty();
     }
 
     @Test
     public void shouldCallBindExportAPI() throws IOException {
         InsightClient client = getInsightClient();
-        CorporaParameters corporaParameters = new CorporaParameters();
         Map<String, Serializable> params = new HashMap<>();
         params.put(MODEL_ID_PARAM, "e67ee0e8-1bef-4fb7-9966-1d14081221");
         params.put(CORPORA_ID_PARAM, "e67ee0e8-1bef-4fb7-9966-1d1408ce67a0");
-        Boolean bound = client.api(ExportResource.class).call(API.Export.BIND, params, corporaParameters);
+        Boolean bound = client.api(BIND).call(params);
         assertThat(bound).isNotNull().isTrue();
     }
 
     @Test
     public void shouldCallAttachExportAPI() throws IOException {
         InsightClient client = getInsightClient();
-        CorporaParameters corporaParameters = new CorporaParameters();
+        AICorpus corpus = new AICorpus("test", new AICorpus.Properties());
         Map<String, Serializable> params = new HashMap<>();
         params.put(CORPORA_ID_PARAM, "e67ee0e8-1bef-4fb7-9966-1d14081221");
-        String uuid = client.api(ExportResource.class).call(API.Export.ATTACH, params, corporaParameters);
+        String uuid = client.api(API.Export.ATTACH).call(params, corpus);
         assertThat(uuid).isNotEmpty();
     }
 
     @Test
     public void shouldCallDoneExportAPI() throws IOException {
         InsightClient client = getInsightClient();
-        CorporaParameters corporaParameters = new CorporaParameters();
         Map<String, Serializable> params = new HashMap<>();
         params.put(EXPORT_ID_PARAM, "e67ee0e8-1bef-4fb7-9966-1d1408ce67a0");
-        Boolean bound = client.api(ExportResource.class).call(API.Export.DONE, params, corporaParameters);
-        assertThat(bound).isNotNull().isTrue();
+        Boolean done = client.api(API.Export.DONE).call(params);
+        assertThat(done).isNotNull().isTrue();
     }
 
     private InsightClient getInsightClient() {

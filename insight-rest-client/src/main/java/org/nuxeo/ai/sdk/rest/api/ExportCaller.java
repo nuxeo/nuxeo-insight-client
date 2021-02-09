@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import okhttp3.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.nuxeo.ai.sdk.objects.AICorpus;
 import org.nuxeo.ai.sdk.objects.CorporaParameters;
 import org.nuxeo.ai.sdk.rest.client.API;
 import org.nuxeo.ai.sdk.rest.client.InsightClient;
@@ -44,7 +45,7 @@ import static org.nuxeo.ai.sdk.rest.Common.MODEL_ID_PARAM;
 import static org.nuxeo.ai.sdk.rest.Common.UID;
 import static org.nuxeo.ai.sdk.rest.client.InsightClient.MAPPER;
 
-public class ExportCaller implements ExportResource {
+public class ExportCaller implements Resource<API.Export> {
 
     public static final String CORPUS_PARAM = "corpus";
 
@@ -52,39 +53,46 @@ public class ExportCaller implements ExportResource {
 
     private final InsightClient client;
 
-    public ExportCaller(InsightClient client) {
+    private final API.Export type;
+
+    public ExportCaller(InsightClient client, API.Export type) {
         this.client = client;
+        this.type = type;
+    }
+
+    @Override
+    public <T> T call(Map<String, Serializable> parameters) throws IOException {
+        return call(parameters, null);
     }
 
     @Override
     @SuppressWarnings("unchecked") // TODO: review type casting
-    public <T> T call(API.Export endpoint, Map<String, Serializable> parameters, Serializable payload)
+    public <T> T call(Map<String, Serializable> parameters, Serializable payload)
             throws IOException {
         if (client == null || !client.isConnected()) {
             throw new ConfigurationException("No active client");
         }
 
-        switch (endpoint) {
+        switch (this.type) {
         case INIT:
             return (T) handleInit(parameters, (CorporaParameters) payload);
         case BIND:
             return (T) handleBind(parameters);
         case ATTACH:
-            return (T) handleAttach(parameters, payload);
+            return (T) handleAttach(parameters, (AICorpus) payload);
         case DONE:
             return (T) handleDone(parameters);
         default:
-            throw new InvalidEndpointException("No such endpoint " + endpoint.name());
+            throw new InvalidEndpointException("No such endpoint " + this.type.name());
         }
     }
 
     private String handleInit(Map<String, Serializable> parameters, CorporaParameters corporaParameters)
             throws JsonProcessingException {
-        String corporaId = (String) parameters.get(CORPORA_ID_PARAM);
-
         String payload = MAPPER.writeValueAsString(corporaParameters);
         Objects.requireNonNull(payload, "Init Export API requires non null Corpora Parameters");
 
+        String corporaId = (String) parameters.get(CORPORA_ID_PARAM);
         return client.post(API.Export.INIT.toPath(client.getProjectId(), corporaId), payload, response -> {
             if (!response.isSuccessful()) {
                 log.error("Failed to initialize Export for project {}, payload {}, url {}, code {} and reason {}",
@@ -123,7 +131,7 @@ public class ExportCaller implements ExportResource {
         });
     }
 
-    private String handleAttach(Map<String, Serializable> parameters, Serializable payload) throws IOException {
+    private String handleAttach(Map<String, Serializable> parameters, AICorpus payload) throws IOException {
         String jsonString;
         try (StringWriter writer = new StringWriter()) {
             MAPPER.writeValue(writer, parameters.get(CORPUS_PARAM));
