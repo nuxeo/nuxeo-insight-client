@@ -18,7 +18,7 @@
  */
 package org.nuxeo.ai.sdk.objects;
 
-import com.fasterxml.jackson.annotation.JsonRawValue;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 
@@ -33,18 +33,19 @@ public class Statistic {
 
     protected final String type;
 
-    @JsonRawValue
-    protected final String value;
-
     protected final Number numericValue;
+
+    @JsonProperty("value")
+    protected Counter value;
 
     protected String aggType;
 
-    public Statistic(String id, String field, String type, String value, Number numericValue) {
+    public Statistic(@JsonProperty("id") String id, @JsonProperty("field") String field,
+            @JsonProperty("type") String type, @JsonProperty("aggType") String aggType,
+            @JsonProperty("numericValue") Number numericValue) {
         this.id = id;
         this.field = field;
         this.type = type;
-        this.value = value;
         this.numericValue = numericValue;
         this.aggType = type;
     }
@@ -84,7 +85,7 @@ public class Statistic {
         return numericValue;
     }
 
-    public String getValue() {
+    public Counter getValue() {
         return value;
     }
 
