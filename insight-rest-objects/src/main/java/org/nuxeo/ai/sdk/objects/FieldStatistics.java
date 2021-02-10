@@ -35,6 +35,8 @@ public class FieldStatistics {
 
     public static final String AGG_TYPE_TERMS = "terms";
 
+    public static final String AGG_TYPE_COUNT = "count";
+
     protected String type;
 
     protected String field;
@@ -45,7 +47,7 @@ public class FieldStatistics {
 
     protected long missing;
 
-    protected String terms;
+    protected Counter terms;
 
     protected long cardinality;
 
@@ -54,7 +56,7 @@ public class FieldStatistics {
     public FieldStatistics() {
     }
 
-    public FieldStatistics(long total, long count, long missing, String type, String field, String terms,
+    public FieldStatistics(long total, long count, long missing, String type, String field, Counter terms,
             long cardinality, boolean multiClass) {
         this.total = total;
         this.missing = missing;
@@ -69,7 +71,7 @@ public class FieldStatistics {
     public static FieldStatistics from(Statistic stat, long total) {
         long missing = 0L;
         long cardinality = 0L;
-        String terms = null;
+        Counter terms = null;
         if (AGG_MISSING.equals(stat.getAggType())) {
             missing = stat.getNumericValue() == null ? 0L : stat.getNumericValue().longValue();
         } else if (AGG_CARDINALITY.equals(stat.getAggType())) {
@@ -138,11 +140,11 @@ public class FieldStatistics {
         this.count = count;
     }
 
-    public String getTerms() {
+    public Counter getTerms() {
         return terms;
     }
 
-    public void setTerms(String terms) {
+    public void setTerms(Counter terms) {
         this.terms = terms;
     }
 
