@@ -19,10 +19,10 @@
  */
 package org.nuxeo.ai.sdk.objects;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -41,15 +41,18 @@ public class TensorInstances implements Serializable {
 
     public final List<Map<String, Tensor>> instances;
 
-    public TensorInstances(@JsonProperty("docId") String docId, @JsonProperty("instances") Map<String, Tensor> inputs) {
+    public TensorInstances(@JsonProperty("docId") String docId,
+            @JsonProperty("instances") List<Map<String, Tensor>> inputs) {
         this.docId = docId;
-        this.instances = Collections.singletonList(inputs);
+        this.instances = inputs;
     }
 
     /**
      * A JSON representation of Tensorflow instance parameter
      */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Tensor implements Serializable {
+
         private static final long serialVersionUID = 2603715122387085509L;
 
         public final String type;
@@ -60,7 +63,16 @@ public class TensorInstances implements Serializable {
 
         public final String[] categories;
 
-        protected Tensor(DataType type, String b64, String text, String[] categories) {
+        protected Tensor(@JsonProperty("type") String type, @JsonProperty("b64") String b64,
+                @JsonProperty("text") String text, @JsonProperty("categories") String[] categories) {
+            this.type = type;
+            this.b64 = b64;
+            this.text = text;
+            this.categories = categories;
+        }
+
+        protected Tensor(DataType type, String b64,
+                String text, String[] categories) {
             this.type = type.shorten();
             this.b64 = b64;
             this.text = text;
@@ -68,15 +80,15 @@ public class TensorInstances implements Serializable {
         }
 
         public static Tensor image(String b64) {
-            return new Tensor(IMAGE, b64, null, null);
+            return new Tensor(IMAGE.shorten(), b64, null, null);
         }
 
         public static Tensor text(String text) {
-            return new Tensor(TEXT, null, text, null);
+            return new Tensor(TEXT.shorten(), null, text, null);
         }
 
         public static Tensor category(String[] categories) {
-            return new Tensor(CATEGORY, null, null, categories);
+            return new Tensor(CATEGORY.shorten(), null, null, categories);
         }
     }
 }

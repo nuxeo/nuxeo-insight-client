@@ -98,7 +98,7 @@ public class TestModelCaller {
         Map<String, Serializable> params = new HashMap<>();
         params.put(MODEL_NAME_PARAM, "testModel");
         params.put(DATASOURCE_PARAM, "dev");
-        TensorInstances instances = new TensorInstances("a doc id", Collections.emptyMap());
+        TensorInstances instances = new TensorInstances("a doc id", Collections.emptyList());
         String response = client.api(API.Model.PREDICT).call(params, instances);
         assertThat(response).isNotEmpty().isNotEqualTo("{}");
     }
