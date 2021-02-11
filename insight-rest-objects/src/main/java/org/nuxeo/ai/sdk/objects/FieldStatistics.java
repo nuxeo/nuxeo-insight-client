@@ -21,6 +21,7 @@ package org.nuxeo.ai.sdk.objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -47,7 +48,7 @@ public class FieldStatistics {
 
     protected long missing;
 
-    protected Counter terms;
+    protected List<Bucket> terms;
 
     protected long cardinality;
 
@@ -56,7 +57,7 @@ public class FieldStatistics {
     public FieldStatistics() {
     }
 
-    public FieldStatistics(long total, long count, long missing, String type, String field, Counter terms,
+    public FieldStatistics(long total, long count, long missing, String type, String field, List<Bucket> terms,
             long cardinality, boolean multiClass) {
         this.total = total;
         this.missing = missing;
@@ -71,7 +72,7 @@ public class FieldStatistics {
     public static FieldStatistics from(Statistic stat, long total) {
         long missing = 0L;
         long cardinality = 0L;
-        Counter terms = null;
+        List<Bucket> terms = null;
         if (AGG_MISSING.equals(stat.getAggType())) {
             missing = stat.getNumericValue() == null ? 0L : stat.getNumericValue().longValue();
         } else if (AGG_CARDINALITY.equals(stat.getAggType())) {
@@ -140,11 +141,11 @@ public class FieldStatistics {
         this.count = count;
     }
 
-    public Counter getTerms() {
+    public List<Bucket> getTerms() {
         return terms;
     }
 
-    public void setTerms(Counter terms) {
+    public void setTerms(List<Bucket> terms) {
         this.terms = terms;
     }
 

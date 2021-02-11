@@ -60,8 +60,7 @@ public class ModelCaller implements Resource<API.Model> {
 
     @Override
     @SuppressWarnings("unchecked") // TODO: review casting
-    public <T> T call(Map<String, Serializable> parameters, Serializable payload)
-            throws JsonProcessingException {
+    public <T> T call(Map<String, Serializable> parameters, Serializable payload) throws JsonProcessingException {
         if (client == null || !client.isConnected()) {
             throw new ConfigurationException("No active client");
         }
@@ -85,8 +84,9 @@ public class ModelCaller implements Resource<API.Model> {
                 return response.body().string();
             });
         case BY_DATASOURCE: {
-            return (T) client.get(API.Model.BY_DATASOURCE.toPath(client.getProjectId(), null,
-                    client.getConfiguration().getDatasource()), response -> {
+            String datasource = (String) parameters.getOrDefault(DATASOURCE_PARAM,
+                    client.getConfiguration().getDatasource());
+            return (T) client.get(API.Model.BY_DATASOURCE.toPath(client.getProjectId(), null, datasource), response -> {
                 if (response.body() == null) {
                     return null;
                 }

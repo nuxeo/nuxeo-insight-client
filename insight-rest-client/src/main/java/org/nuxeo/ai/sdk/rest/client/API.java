@@ -99,9 +99,9 @@ public class API {
             case ALL:
                 return API_AI + project + "/" + "models?properties=ai_model";
             case BY_DATASOURCE:
-                return API_AI + project + "/" + "models?properties=ai_model&publishState=published&label=" + datasource;
+                return  API_AI + project + "/" + "models?properties=ai_model&datasource=" + datasource;
             case PUBLISHED:
-                return API_AI + project + "/" + "models?properties=ai_model&datasource=" + datasource;
+                return  API_AI + project + "/" + "models?properties=ai_model&publishState=published&label=" + datasource;
             case DELTA:
                 return API_AI + project + "/model/" + id + "/corpusdelta";
             case PREDICT:
