@@ -20,6 +20,7 @@ package org.nuxeo.ai.sdk.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -36,7 +37,7 @@ public class Statistic {
     protected final Number numericValue;
 
     @JsonProperty("value")
-    protected Counter value;
+    protected List<Bucket> value;
 
     protected String aggType;
 
@@ -47,7 +48,7 @@ public class Statistic {
         this.field = field;
         this.type = type;
         this.numericValue = numericValue;
-        this.aggType = type;
+        this.aggType = aggType;
     }
 
     /**
@@ -55,8 +56,8 @@ public class Statistic {
      *
      * @return {@link Statistic} new object
      */
-    public static Statistic of(String id, String field, String type, String value, Number numericValue) {
-        return new Statistic(id, field, type, value, numericValue);
+    public static Statistic of(String id, String field, String type, String aggType, Number numericValue) {
+        return new Statistic(id, field, type, aggType, numericValue);
     }
 
     /**
@@ -85,8 +86,12 @@ public class Statistic {
         return numericValue;
     }
 
-    public Counter getValue() {
+    public List<Bucket> getValue() {
         return value;
+    }
+
+    public void setValue(List<Bucket> value) {
+        this.value = value;
     }
 
     public String getAggType() {

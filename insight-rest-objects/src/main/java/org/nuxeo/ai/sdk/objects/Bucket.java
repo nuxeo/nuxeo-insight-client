@@ -35,8 +35,16 @@ public class Bucket {
     protected final long docCount;
 
     @JsonCreator
-    public Bucket(@JsonProperty(value = "key") String key, @JsonProperty("docCount") Long docCount) {
+    public Bucket(@JsonProperty("key") String key, @JsonProperty("docCount") Long docCount) {
         this.key = StringUtils.isEmpty(key) ? UNDEFINED_KEY : key;
         this.docCount = docCount;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public long getDocCount() {
+        return docCount;
     }
 }
