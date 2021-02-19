@@ -19,6 +19,9 @@
  */
 package org.nuxeo.ai.sdk.rest.exception;
 
+/**
+ * Thrown on wrong API path and/or query parameters
+ */
 public class UnsupportedPathException extends RuntimeException {
 
     public UnsupportedPathException(String message) {

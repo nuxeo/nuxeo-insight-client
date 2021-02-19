@@ -19,6 +19,9 @@
  */
 package org.nuxeo.ai.sdk.rest.exception;
 
+/**
+ * Thrown on misconfiguration of {@link org.nuxeo.ai.sdk.rest.client.InsightClient}
+ */
 public class ConfigurationException extends RuntimeException {
 
     public ConfigurationException(String message) {

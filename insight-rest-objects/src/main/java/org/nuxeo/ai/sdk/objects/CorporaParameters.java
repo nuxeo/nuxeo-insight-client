@@ -23,6 +23,26 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Represents parameters to build and collect corpora on Insight Cloud
+ * ___________________________________________________________________
+ * Example:
+ * <pre>
+ * {
+ *   "fields": [
+ *     {
+ *       "name": "file:content",
+ *       "type": "img"
+ *     },
+ *     {
+ *       "name": "dc:title",
+ *       "type": "txt"
+ *     }
+ *   ],
+ *   "query": "SELECT * FROM Document WHERE dc:title = 'something'"
+ * }
+ * </pre>
+ */
 public class CorporaParameters implements Serializable {
 
     private static final long serialVersionUID = 603202103827L;
@@ -52,11 +72,12 @@ public class CorporaParameters implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         CorporaParameters that = (CorporaParameters) o;
-        return fields.equals(that.fields) &&
-                Objects.equals(query, that.query);
+        return fields.equals(that.fields) && Objects.equals(query, that.query);
     }
 
     @Override

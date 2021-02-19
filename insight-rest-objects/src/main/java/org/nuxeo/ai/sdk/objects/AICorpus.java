@@ -19,6 +19,7 @@
  */
 package org.nuxeo.ai.sdk.objects;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
@@ -26,15 +27,51 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A POJO for AI_Corpus document in AI cloud
+ * A POJO for Corpus document in Insight Cloud
+ * ___________________________________________
+ * Example:
+ * <pre>
+ * {
+ *   "name": "test-corpus",
+ *   "entity-type": "document",
+ *   "type": "AI_Corpus",
+ *   "properties": {
+ *     "dc:title": null,
+ *     "ai_corpus:documents_count": 100,
+ *     "ai_corpus:evaluation_documents_count": 100,
+ *     "ai_corpus:query": null,
+ *     "ai_corpus:split": 80,
+ *     "ai_corpus:fields": [
+ *       {
+ *         "name": "dc:creator"
+ *       }
+ *     ],
+ *     "ai_corpus:training_data": {
+ *       "upload-fileId": "0",
+ *       "upload-batch": "upload_01"
+ *     },
+ *     "ai_corpus:evaluation_data": {
+ *       "upload-fileId": "1",
+ *       "upload-batch": "upload_02"
+ *     },
+ *     "ai_corpus:statistics": {
+ *       "upload-fileId": "2",
+ *       "upload-batch": "upload_03"
+ *     },
+ *     "ai_corpus:import_info": {
+ *       "start": "2021-02-17T15:49:36.531Z",
+ *       "end": "2021-02-17T15:49:37.531Z"
+ *     },
+ *     "ai_corpus:export_job_id": null,
+ *     "ai_corpus:export_batch_id": "test-batch-id"
+ *   }
+ * }
+ * </pre>
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AICorpus implements Serializable {
 
     private static final long serialVersionUID = 92021021510821L;
-
-    protected static final String entity = "document";
-
-    protected static final String type = "AI_Corpus";
 
     @JsonProperty("name")
     protected String name;
@@ -42,19 +79,15 @@ public class AICorpus implements Serializable {
     @JsonProperty("properties")
     protected Properties props;
 
+    @JsonProperty("entity-type")
+    protected String entity = "document";
+
+    @JsonProperty("type")
+    protected String type = "AI_Corpus";
+
     public AICorpus(@JsonProperty("name") String name, @JsonProperty("properties") Properties props) {
         this.name = name;
         this.props = props;
-    }
-
-    @JsonProperty("entity-type")
-    public String getEntity() {
-        return entity;
-    }
-
-    @JsonProperty("type")
-    public String getType() {
-        return type;
     }
 
     public String getName() {
@@ -73,6 +106,9 @@ public class AICorpus implements Serializable {
         this.props = props;
     }
 
+    /**
+     * Properties mapper for AI Corpus Nuxeo Document
+     */
     public static final class Properties {
 
         @JsonProperty("dc:title")
@@ -114,9 +150,9 @@ public class AICorpus implements Serializable {
         public Properties() {
         }
 
-        protected Properties(String title, long docCount, long evaluationDocCount, String query,
-                          int split, List<Map<String, Object>> fields, Batch trainData,
-                          Batch evalData, Batch stats, Info info, String jobId, String batchId) {
+        protected Properties(String title, long docCount, long evaluationDocCount, String query, int split,
+                List<Map<String, Object>> fields, Batch trainData, Batch evalData, Batch stats, Info info, String jobId,
+                String batchId) {
             this.title = title;
             this.docCount = docCount;
             this.evaluationDocCount = evaluationDocCount;
@@ -297,6 +333,9 @@ public class AICorpus implements Serializable {
         }
     }
 
+    /**
+     * Batch uploader POJO used for Blob upload in the default Nuxeo Client
+     */
     public static final class Batch {
 
         @JsonProperty("upload-fileId")
@@ -327,6 +366,9 @@ public class AICorpus implements Serializable {
         }
     }
 
+    /**
+     * Timing information on exported batch
+     */
     public static final class Info {
 
         @JsonProperty("start")

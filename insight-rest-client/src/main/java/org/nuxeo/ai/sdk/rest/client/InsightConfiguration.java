@@ -22,6 +22,10 @@ package org.nuxeo.ai.sdk.rest.client;
 import java.time.Duration;
 import java.util.Objects;
 
+/**
+ * Configuration instance that service as main credential provider via {@link Authentication}
+ * and insight client information such as URL and Project Id
+ */
 public class InsightConfiguration {
 
     private final String url;

@@ -24,7 +24,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * POJO for defining statistics' buckets
+ * POJO for defining statistics' bucket retrieved from ES
+ *
+ * <code>
+ * {
+ *  "key":"dc:title",
+ *  "docCount":100
+ * }
+ * </code>
  */
 public class Bucket {
 
@@ -35,7 +42,7 @@ public class Bucket {
     protected final long docCount;
 
     @JsonCreator
-    public Bucket(@JsonProperty("key") String key, @JsonProperty("docCount") Long docCount) {
+    public Bucket(@JsonProperty("key") String key, @JsonProperty("docCount") long docCount) {
         this.key = StringUtils.isEmpty(key) ? UNDEFINED_KEY : key;
         this.docCount = docCount;
     }

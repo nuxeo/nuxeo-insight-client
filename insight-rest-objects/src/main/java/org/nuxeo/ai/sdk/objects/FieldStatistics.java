@@ -26,6 +26,25 @@ import java.util.Objects;
 
 /**
  * POJO that represents overall statistic for a field
+ * __________________________________________________
+ * Example:
+ * <pre>
+ * {
+ *   "type": "terms",
+ *   "field": "total",
+ *   "count": 100,
+ *   "total": 100,
+ *   "missing": 0,
+ *   "terms": [
+ *     {
+ *       "key": "dc:title",
+ *       "docCount": 10
+ *     }
+ *   ],
+ *   "cardinality": 0,
+ *   "multiClass": false
+ * }
+ * </pre>
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FieldStatistics {
