@@ -1,0 +1,35 @@
+{
+  "name": "test-corpus",
+  "entity-type": "document",
+  "type": "AI_Corpus",
+  "properties": {
+    "dc:title": null,
+    "ai_corpus:documents_count": 100,
+    "ai_corpus:evaluation_documents_count": 100,
+    "ai_corpus:query": null,
+    "ai_corpus:split": 80,
+    "ai_corpus:fields": [
+      {
+        "name": "dc:creator"
+      }
+    ],
+    "ai_corpus:training_data": {
+      "upload-fileId": "0",
+      "upload-batch": "upload_01"
+    },
+    "ai_corpus:evaluation_data": {
+      "upload-fileId": "1",
+      "upload-batch": "upload_02"
+    },
+    "ai_corpus:statistics": {
+      "upload-fileId": "2",
+      "upload-batch": "upload_03"
+    },
+    "ai_corpus:import_info": {
+      "start": "2021-02-17T15:49:36.531Z",
+      "end": "2021-02-17T15:49:37.531Z"
+    },
+    "ai_corpus:export_job_id": null,
+    "ai_corpus:export_batch_id": "test-batch-id"
+  }
+}

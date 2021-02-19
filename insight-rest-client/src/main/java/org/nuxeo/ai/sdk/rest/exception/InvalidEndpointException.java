@@ -19,6 +19,9 @@
  */
 package org.nuxeo.ai.sdk.rest.exception;
 
+/**
+ * Thrown on non-existent API endpoints
+ */
 public class InvalidEndpointException extends RuntimeException {
 
     public InvalidEndpointException(String message) {

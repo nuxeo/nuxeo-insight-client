@@ -25,7 +25,14 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * POOJO for defining property -> type relation
+ * POJO for defining property -> type relation
+ *
+ * <pre>
+ * {
+ *   "name": "file:content",
+ *   "type": "img"
+ * }
+ * </pre>
  */
 public class PropertyType implements Serializable {
 
@@ -43,6 +50,16 @@ public class PropertyType implements Serializable {
      */
     public static PropertyType of(@Nonnull String name, @Nonnull String type) {
         return new PropertyType(name, type);
+    }
+
+    /**
+     * Factory constructor
+     * @param name of the property
+     * @param type of the property
+     * @return new instance of {@link PropertyType}
+     */
+    public static PropertyType of(@Nonnull String name, @Nonnull DataType type) {
+        return new PropertyType(name, type.shorten());
     }
 
     public PropertyType() {

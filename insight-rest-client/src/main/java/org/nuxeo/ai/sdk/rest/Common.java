@@ -20,6 +20,9 @@
 
 package org.nuxeo.ai.sdk.rest;
 
+/**
+ * Common Constants
+ */
 public final class Common {
 
     public static final String UID = "uid";

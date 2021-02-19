@@ -1,0 +1,18 @@
+{
+  "docId": "aDocumentId",
+  "instances": [
+    {
+      "dc:subjects": {
+        "type": "cat",
+        "categories": [
+          "sciences",
+          "art/cinema"
+        ]
+      },
+      "dc:title": {
+        "type": "txt",
+        "text": "My document title"
+      }
+    }
+  ]
+}

@@ -23,6 +23,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Objects;
 
+/**
+ * Generic authentication configuration that supports authentications:
+ * - Basic
+ * - Token based
+ */
 public class Authentication {
 
     private final TYPE type;

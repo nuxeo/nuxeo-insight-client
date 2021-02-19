@@ -41,18 +41,48 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Represents a response from TFServing
+ * Represents a response from Insight Cloud
+ * ________________________________________
+ * Example:
+ * <pre>
+ * {
+ *   "results": [
+ *     {
+ *       "output_names": [
+ *         "dc:nature",
+ *         "dc:subjects",
+ *       ],
+ *       "dc:nature": [
+ *         2.545878714954597E-6,
+ *         3.418835206048243E-7
+ *       ],
+ *       "dc:nature_labels": [
+ *         "LOC",
+ *         "HUM"
+ *       ],
+ *       "dc:subjects": [
+ *         2.545878714954597E-6,
+ *         0.8650407910346986
+ *       ],
+ *       "dc:subjects_labels": [
+ *         "LOG",
+ *         "NO_MATCH"
+ *       ]
+ *     }
+ *   ]
+ * }
+ * </pre>
  */
 @JsonDeserialize(using = InsightResponse.ResultDeserializer.class)
 public class InsightResponse implements Serializable {
-
-    private static final Logger log = LogManager.getLogger(InsightResponse.class);
 
     public static final String JSON_OUTPUTS = "output_names";
 
     public static final String JSON_LABELS = "_labels";
 
     protected static final ObjectMapper MAPPER = new ObjectMapper();
+
+    private static final Logger log = LogManager.getLogger(InsightResponse.class);
 
     /**
      * Map{ output_name: { category1: prob1 ..... } }
@@ -89,12 +119,12 @@ public class InsightResponse implements Serializable {
             return name;
         }
 
-        public float getConfidence() {
-            return confidence;
-        }
-
         public void setName(String name) {
             this.name = name;
+        }
+
+        public float getConfidence() {
+            return confidence;
         }
 
         public void setConfidence(float confidence) {

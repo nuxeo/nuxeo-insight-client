@@ -25,11 +25,15 @@ import org.nuxeo.ai.sdk.rest.exception.UnsupportedPathException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+/**
+ * Class for enums containing public API to Insight Cloud
+ */
 public class API {
 
     public enum HttpMethod {
         GET, POST, PUT, DELETE
     }
+
 
     public enum Export implements Endpoint {
 

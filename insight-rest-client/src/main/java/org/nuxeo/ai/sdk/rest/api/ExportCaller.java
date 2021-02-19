@@ -45,7 +45,10 @@ import static org.nuxeo.ai.sdk.rest.Common.MODEL_ID_PARAM;
 import static org.nuxeo.ai.sdk.rest.Common.UID;
 import static org.nuxeo.ai.sdk.rest.client.InsightClient.MAPPER;
 
-public class ExportCaller implements Resource<API.Export> {
+/**
+ * {@link Resource} for Export API of Insight Cloud
+ */
+public class ExportCaller implements Resource {
 
     public static final String CORPUS_PARAM = "corpus";
 
@@ -66,7 +69,7 @@ public class ExportCaller implements Resource<API.Export> {
     }
 
     @Override
-    @SuppressWarnings("unchecked") // TODO: review type casting
+    @SuppressWarnings("unchecked") // TODO: can be Object to avoid suppression
     public <T> T call(Map<String, Serializable> parameters, Serializable payload)
             throws IOException {
         if (client == null || !client.isConnected()) {

@@ -32,6 +32,28 @@ import static org.nuxeo.ai.sdk.objects.DataType.TEXT;
 
 /**
  * A JSON representation of Tensorflow instance parameters
+ * _______________________________________________________
+ * Example:
+ * <pre>
+ * {
+ *   "docId": "aDocumentId",
+ *   "instances": [
+ *     {
+ *       "dc:subjects": {
+ *         "type": "cat",
+ *         "categories": [
+ *           "sciences",
+ *           "art/cinema"
+ *         ]
+ *       },
+ *       "dc:title": {
+ *         "type": "txt",
+ *         "text": "My document title"
+ *       }
+ *     }
+ *   ]
+ * }
+ * </pre>
  */
 public class TensorInstances implements Serializable {
 
@@ -71,8 +93,7 @@ public class TensorInstances implements Serializable {
             this.categories = categories;
         }
 
-        protected Tensor(DataType type, String b64,
-                String text, String[] categories) {
+        protected Tensor(DataType type, String b64, String text, String[] categories) {
             this.type = type.shorten();
             this.b64 = b64;
             this.text = text;

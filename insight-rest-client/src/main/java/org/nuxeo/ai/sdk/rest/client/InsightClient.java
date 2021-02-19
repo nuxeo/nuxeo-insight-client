@@ -44,6 +44,13 @@ import java.util.function.Supplier;
 
 import static org.nuxeo.client.ConstantsV1.API_PATH;
 
+/**
+ * REST Client to Insight Cloud
+ * For endpoints look at derived from {@link Resource}
+ * for example:
+ *  {@link ExportCaller} for Export API
+ *  {@link ModelCaller} for Model API
+ */
 public class InsightClient {
 
     public static final ObjectMapper MAPPER = new ObjectMapper();
@@ -122,12 +129,11 @@ public class InsightClient {
         return configuration.getProjectId();
     }
 
-    @SuppressWarnings("unchecked") // TODO: check casting
-    public <T extends API.Endpoint> Resource<T> api(T type) {
+    public <T extends API.Endpoint> Resource api(T type) {
         if (type instanceof API.Export) {
-            return (Resource<T>) new ExportCaller(this, (API.Export) type);
+            return new ExportCaller(this, (API.Export) type);
         } else if (type instanceof API.Model) {
-            return (Resource<T>) new ModelCaller(this, (API.Model) type);
+            return new ModelCaller(this, (API.Model) type);
         } else {
             return null;
         }

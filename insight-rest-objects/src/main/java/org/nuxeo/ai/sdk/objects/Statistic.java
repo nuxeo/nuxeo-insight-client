@@ -25,6 +25,23 @@ import java.util.Objects;
 
 /**
  * A POJO representation of a Dataset Statistic
+ * ____________________________________________
+ * Example:
+ * <pre>
+ * {
+ *   "id": "terms",
+ *   "field": "total",
+ *   "type":"total",
+ *   "aggType": "terms",
+ *   "numericValue": 10,
+ *   "value": [
+ *     {
+ *       "key": "dc:title",
+ *       "docCount": 10
+ *     }
+ *   ]
+ * }
+ * </pre>
  */
 public class Statistic {
 

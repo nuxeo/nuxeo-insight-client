@@ -20,6 +20,9 @@
 
 package org.nuxeo.ai.sdk.objects;
 
+/**
+ * Enum for allowed types for export and predict
+ */
 public enum DataType {
 
     IMAGE, TEXT, CATEGORY;

@@ -36,7 +36,10 @@ import static org.nuxeo.ai.sdk.rest.Common.MODEL_ID_PARAM;
 import static org.nuxeo.ai.sdk.rest.Common.MODEL_NAME_PARAM;
 import static org.nuxeo.ai.sdk.rest.client.InsightClient.MAPPER;
 
-public class ModelCaller implements Resource<API.Model> {
+/**
+ * {@link Resource} for Model API of Insight Cloud
+ */
+public class ModelCaller implements Resource {
 
     public static final String LABEL_PARAM = "label";
 
