@@ -46,7 +46,7 @@ The "release" increment mode removes any PRERELEASE or BUILD parts (see VERSION)
                             sh 'chmod +r VERSION || true'
                             if ("$DRY_RUN" != 'true') {
                                 def releaseProps = readProperties file: 'release.properties'
-                                def jobName = '/nuxeo/nuxeo-ai/v' + releaseProps['RELEASE_VERSION']
+                                def jobName = '/nuxeo/nuxeo-insight-client/v' + releaseProps['RELEASE_VERSION']
                                 if (!Jenkins.instance.getItemByFullName(jobName)) {
                                     build job: '/nuxeo/nuxeo-insight-client/', propagate: false, wait: true
                                 }
