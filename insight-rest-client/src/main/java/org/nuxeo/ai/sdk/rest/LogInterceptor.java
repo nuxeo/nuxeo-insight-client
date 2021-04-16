@@ -19,16 +19,18 @@
  */
 package org.nuxeo.ai.sdk.rest;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import okhttp3.Connection;
 import okhttp3.Headers;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.io.IOException;
 
 /**
  * @since 0.1
@@ -37,47 +39,49 @@ public class LogInterceptor implements Interceptor {
 
     private static final Logger log = LogManager.getLogger(LogInterceptor.class);
 
+    public static final List<String> redactedHeaders = Arrays.asList("PROXY-AUTHORIZATION", "AUTHORIZATION",
+            "X-AUTHENTICATION-TOKEN");
+
+    public static final List<String> skippedHeaders = Arrays.asList("CONTENT-TYPE", "CONTENT-LENGTH");
+
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
-        RequestBody requestBody = request.body();
-        Connection connection = chain.connection();
-        boolean hasRequestBody = requestBody != null;
-        String requestStartMessage = "--> " + request.method() + ' ' + request.url()
-                + (connection != null ? " " + connection.protocol() : "");
-        if (hasRequestBody) {
-            requestStartMessage = requestStartMessage + " (" + requestBody.contentLength() + "-byte body)";
-        }
-
-        log.debug(requestStartMessage);
-        if (hasRequestBody) {
-            if (requestBody.contentType() != null) {
-                log.debug("Content-Type: {}", requestBody.contentType());
+        if (log.isDebugEnabled()) {
+            RequestBody requestBody = request.body();
+            Connection connection = chain.connection();
+            boolean hasRequestBody = requestBody != null;
+            log.debug("{} {}{}{}", request.method(), request.url(),
+                    connection != null ? " " + connection.protocol() : "",
+                    hasRequestBody ? " (" + requestBody.contentLength() + "-byte body)" : "");
+            if (log.isTraceEnabled()) {
+                if (hasRequestBody) {
+                    if (requestBody.contentType() != null) {
+                        log.trace("  Content-Type: {}", requestBody.contentType());
+                    }
+                    if (requestBody.contentLength() != -1L) {
+                        log.trace("  Content-Length: {}", requestBody.contentLength());
+                    }
+                }
+                Headers headers = request.headers();
+                headers.names()
+                       .stream()
+                       .filter(name -> !skippedHeaders.contains(name.toUpperCase()))
+                       .forEach(name -> logHeader(headers, name));
             }
-
-            if (requestBody.contentLength() != -1L) {
-                log.debug("Content-Length: {}", requestBody.contentLength());
-            }
-        }
-        Headers headers = request.headers();
-        int i = 0;
-        for (int count = headers.size(); i < count; ++i) {
-            String name = headers.name(i);
-            if (!"Content-Type".equalsIgnoreCase(name) && !"Content-Length".equalsIgnoreCase(name)) {
-                logHeader(headers, i);
-            }
-        }
-        if (hasRequestBody) {
-            log.debug("--> END {} (binary {}-byte body omitted)", request.method(), requestBody.contentLength());
-        } else {
-            log.debug("--> END {}", request.method());
         }
         Response response = chain.proceed(request);
-        log.debug("--> RESPONSE {}", response.toString());
+        log.debug("RESPONSE {}", response.toString());
         return response;
     }
 
-    private void logHeader(Headers headers, int i) {
-        log.debug("{}:{}", headers.name(i), headers.value(i));
+    private void logHeader(Headers headers, String name) {
+        String value;
+        if (redactedHeaders.contains(name.toUpperCase())) {
+            value = "******"; // do not log sensitive values
+        } else {
+            value = headers.get(name);
+        }
+        log.trace("  {}:{}", name, value);
     }
 }
