@@ -47,8 +47,6 @@ import static org.nuxeo.ai.sdk.rest.client.InsightClient.MAPPER;
 
 public class ExportCaller implements Resource<API.Export> {
 
-    public static final String CORPUS_PARAM = "corpus";
-
     private final Logger log = LogManager.getLogger(ExportCaller.class);
 
     private final InsightClient client;
@@ -67,8 +65,7 @@ public class ExportCaller implements Resource<API.Export> {
 
     @Override
     @SuppressWarnings("unchecked") // TODO: review type casting
-    public <T> T call(Map<String, Serializable> parameters, Serializable payload)
-            throws IOException {
+    public <T> T call(Map<String, Serializable> parameters, Serializable payload) throws IOException {
         if (client == null || !client.isConnected()) {
             throw new ConfigurationException("No active client");
         }
@@ -79,7 +76,7 @@ public class ExportCaller implements Resource<API.Export> {
         case BIND:
             return (T) handleBind(parameters);
         case ATTACH:
-            return (T) handleAttach(parameters, (AICorpus) payload);
+            return (T) handleAttach((String) parameters.get(CORPORA_ID_PARAM), (AICorpus) payload);
         case DONE:
             return (T) handleDone(parameters);
         default:
@@ -131,15 +128,14 @@ public class ExportCaller implements Resource<API.Export> {
         });
     }
 
-    private String handleAttach(Map<String, Serializable> parameters, AICorpus payload) throws IOException {
+    private String handleAttach(String corporaId, AICorpus payload) throws IOException {
         String jsonString;
         try (StringWriter writer = new StringWriter()) {
-            MAPPER.writeValue(writer, parameters.get(CORPUS_PARAM));
+            MAPPER.writeValue(writer, payload);
             jsonString = writer.toString();
         }
 
         log.info("Creating dataset document");
-        String corporaId = (String) parameters.get(CORPORA_ID_PARAM);
         Objects.requireNonNull(corporaId, "Attach API requires corpora ID");
         JsonNode node = client.post(API.Export.ATTACH.toPath(client.getProjectId(), corporaId), jsonString, (resp) -> {
             if (!resp.isSuccessful()) {
