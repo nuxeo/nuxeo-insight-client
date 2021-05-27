@@ -4,7 +4,7 @@
 
   <groupId>org.nuxeo.ai</groupId>
   <artifactId>nuxeo-insight-client</artifactId>
-  <version>1.0.1-SNAPSHOT</version>
+  <version>1.0.1</version>
 
   <name>Nuxeo Insight Client</name>
   <description>Nuxeo Insight REST SDK</description>
