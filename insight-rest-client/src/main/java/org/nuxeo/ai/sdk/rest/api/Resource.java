@@ -20,10 +20,10 @@
 
 package org.nuxeo.ai.sdk.rest.api;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Map;
+import javax.annotation.Nullable;
 
 /**
  * Marker resource for API endpoints

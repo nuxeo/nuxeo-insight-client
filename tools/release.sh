@@ -33,18 +33,18 @@ INCREMENT=${INCREMENT:-patch}
 NEXT_VERSION=$(semver bump "$INCREMENT" "$RELEASE_VERSION")
 
 printf "Releasing %s\n\tVersion:\t%s\n\tNext version:\t%s\n" "$(git remote get-url origin)" "$RELEASE_VERSION" "$NEXT_VERSION"
-echo "RELEASE_VERSION=$RELEASE_VERSION" > release.properties
-echo "INCREMENT=$INCREMENT" >> release.properties
-echo "NEXT_VERSION=$NEXT_VERSION" >> release.properties
+echo "RELEASE_VERSION=$RELEASE_VERSION" >release.properties
+echo "INCREMENT=$INCREMENT" >>release.properties
+echo "NEXT_VERSION=$NEXT_VERSION" >>release.properties
 
 mvn -V -B versions:set -DnewVersion="$RELEASE_VERSION" -DgenerateBackupPoms=false
 git add -u
 if [ "$DRY_RUN" = 'true' ]; then
-    echo "Dry run: skip 'jx step next-version' and 'jx step changelog'"
-    git diff --cached
+  echo "Dry run: skip 'jx step next-version' and 'jx step changelog'"
+  git diff --cached
 else
-    jx step next-version --version="$RELEASE_VERSION" -t
-    jx step changelog -v "v$RELEASE_VERSION"
+  jx step next-version --version="$RELEASE_VERSION" -t
+  jx step changelog -v "v$RELEASE_VERSION"
 fi
 
 # Not including the release tag in master history
@@ -54,8 +54,8 @@ mvn -B versions:set -DnewVersion="${NEXT_VERSION}-SNAPSHOT" -DgenerateBackupPoms
 jx step next-version --version="$NEXT_VERSION"
 git commit -a -m"Post release ${RELEASE_VERSION}. Set version ${NEXT_VERSION}."
 if [ "$DRY_RUN" = 'true' ]; then
-    echo "Dry run: skip 'git push' and 'jx start pipeline'"
-    git show
+  echo "Dry run: skip 'git push' and 'jx start pipeline'"
+  git show
 else
-    git push origin "$BRANCH"
+  git push origin "$BRANCH"
 fi

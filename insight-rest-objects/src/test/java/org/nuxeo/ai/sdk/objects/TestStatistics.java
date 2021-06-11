@@ -19,14 +19,13 @@
  */
 package org.nuxeo.ai.sdk.objects;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Test;
-
-import java.util.Collections;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.nuxeo.ai.sdk.objects.FieldStatistics.AGG_TYPE_TERMS;
+
+import java.util.Collections;
+import org.junit.Test;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class TestStatistics {
 

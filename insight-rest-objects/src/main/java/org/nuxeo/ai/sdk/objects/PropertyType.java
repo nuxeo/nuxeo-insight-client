@@ -19,14 +19,13 @@
  */
 package org.nuxeo.ai.sdk.objects;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.Serializable;
 import java.util.Objects;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * POJO for defining property -> type relation
- *
  * <pre>
  * {
  *   "name": "file:content",
@@ -44,6 +43,7 @@ public class PropertyType implements Serializable {
 
     /**
      * Factory constructor
+     *
      * @param name of the property
      * @param type of the property
      * @return new instance of {@link PropertyType}
@@ -54,6 +54,7 @@ public class PropertyType implements Serializable {
 
     /**
      * Factory constructor
+     *
      * @param name of the property
      * @param type of the property
      * @return new instance of {@link PropertyType}
@@ -64,16 +65,16 @@ public class PropertyType implements Serializable {
 
     public PropertyType() {
     }
-    
+
     public PropertyType(String name, String type) {
         this.name = name;
         this.type = type;
     }
-    
+
     public String getName() {
         return name;
     }
-    
+
     public void setName(String name) {
         this.name = name;
     }
@@ -82,11 +83,11 @@ public class PropertyType implements Serializable {
     public String getType() {
         return type;
     }
-    
+
     public void setType(String type) {
         this.type = type;
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -98,11 +99,10 @@ public class PropertyType implements Serializable {
         PropertyType that = (PropertyType) o;
         return Objects.equals(name, that.name) && Objects.equals(type, that.type);
     }
-    
+
     @Override
     public int hashCode() {
         return Objects.hash(name, type);
     }
-    
-    
+
 }

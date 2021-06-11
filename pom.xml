@@ -52,7 +52,7 @@
           <version>2.7</version>
           <configuration>
             <outputFile>${project.build.directory}/outdated-dependencies.txt</outputFile>
-<!--            <rulesUri>file:///${session.executionRootDirectory}/versions-rules.xml</rulesUri>-->
+            <!--            <rulesUri>file:///${session.executionRootDirectory}/versions-rules.xml</rulesUri>-->
           </configuration>
         </plugin>
       </plugins>

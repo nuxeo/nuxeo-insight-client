@@ -5,8 +5,7 @@
       "dc:subjects": {
         "type": "cat",
         "categories": [
-          "sciences",
-          "art/cinema"
+          "sciences", "art/cinema"
         ]
       },
       "dc:title": {

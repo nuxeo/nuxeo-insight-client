@@ -19,12 +19,12 @@
  */
 package org.nuxeo.ai.sdk.rest;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.Test;
 import org.nuxeo.ai.sdk.rest.client.Authentication;
 import org.nuxeo.ai.sdk.rest.client.InsightClient;
 import org.nuxeo.ai.sdk.rest.client.InsightConfiguration;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class TestInsightClient {
 

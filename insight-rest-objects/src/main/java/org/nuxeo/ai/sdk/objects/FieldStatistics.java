@@ -19,10 +19,9 @@
  */
 package org.nuxeo.ai.sdk.objects;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 import java.util.List;
 import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
  * POJO that represents overall statistic for a field

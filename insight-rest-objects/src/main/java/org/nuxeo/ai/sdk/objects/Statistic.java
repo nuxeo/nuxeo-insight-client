@@ -18,10 +18,9 @@
  */
 package org.nuxeo.ai.sdk.objects;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A POJO representation of a Dataset Statistic

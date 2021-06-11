@@ -19,16 +19,15 @@
  */
 package org.nuxeo.ai.sdk.objects;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import static org.nuxeo.ai.sdk.objects.DataType.CATEGORY;
+import static org.nuxeo.ai.sdk.objects.DataType.IMAGE;
+import static org.nuxeo.ai.sdk.objects.DataType.TEXT;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-
-import static org.nuxeo.ai.sdk.objects.DataType.CATEGORY;
-import static org.nuxeo.ai.sdk.objects.DataType.IMAGE;
-import static org.nuxeo.ai.sdk.objects.DataType.TEXT;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A JSON representation of Tensorflow instance parameters
