@@ -20,9 +20,18 @@
 
 package org.nuxeo.ai.sdk.rest.api;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import okhttp3.Response;
+import static javax.ws.rs.core.Response.Status.OK;
+import static org.nuxeo.ai.sdk.rest.Common.CORPORA_ID_PARAM;
+import static org.nuxeo.ai.sdk.rest.Common.EXPORT_ID_PARAM;
+import static org.nuxeo.ai.sdk.rest.Common.MODEL_ID_PARAM;
+import static org.nuxeo.ai.sdk.rest.Common.UID;
+import static org.nuxeo.ai.sdk.rest.client.InsightClient.MAPPER;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.io.StringWriter;
+import java.util.Map;
+import java.util.Objects;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.nuxeo.ai.sdk.objects.AICorpus;
@@ -31,19 +40,10 @@ import org.nuxeo.ai.sdk.rest.client.API;
 import org.nuxeo.ai.sdk.rest.client.InsightClient;
 import org.nuxeo.ai.sdk.rest.exception.ConfigurationException;
 import org.nuxeo.ai.sdk.rest.exception.InvalidEndpointException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.io.StringWriter;
-import java.util.Map;
-import java.util.Objects;
-
-import static javax.ws.rs.core.Response.Status.OK;
-import static org.nuxeo.ai.sdk.rest.Common.CORPORA_ID_PARAM;
-import static org.nuxeo.ai.sdk.rest.Common.EXPORT_ID_PARAM;
-import static org.nuxeo.ai.sdk.rest.Common.MODEL_ID_PARAM;
-import static org.nuxeo.ai.sdk.rest.Common.UID;
-import static org.nuxeo.ai.sdk.rest.client.InsightClient.MAPPER;
+import okhttp3.Response;
 
 /**
  * {@link Resource} for Export API of Insight Cloud
@@ -68,8 +68,7 @@ public class ExportCaller implements Resource {
 
     @Override
     @SuppressWarnings("unchecked") // TODO: can be Object to avoid suppression
-    public <T> T call(Map<String, Serializable> parameters, Serializable payload)
-            throws IOException {
+    public <T> T call(Map<String, Serializable> parameters, Serializable payload) throws IOException {
         if (client == null || !client.isConnected()) {
             throw new ConfigurationException("No active client");
         }

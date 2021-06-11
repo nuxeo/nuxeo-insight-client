@@ -20,9 +20,9 @@
 
 package org.nuxeo.ai.sdk.rest;
 
-import okhttp3.Response;
-
 import java.io.IOException;
+
+import okhttp3.Response;
 
 /**
  * A callback to handle a response from a call to the cloud.

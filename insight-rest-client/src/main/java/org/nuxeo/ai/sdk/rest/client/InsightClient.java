@@ -20,8 +20,12 @@
 
 package org.nuxeo.ai.sdk.rest.client;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import okhttp3.Response;
+import static org.nuxeo.client.ConstantsV1.API_PATH;
+
+import java.io.IOException;
+import java.util.Objects;
+import java.util.function.Supplier;
+import javax.annotation.Nonnull;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,20 +40,16 @@ import org.nuxeo.client.marshaller.NuxeoConverterFactory;
 import org.nuxeo.client.objects.upload.BatchUpload;
 import org.nuxeo.client.spi.auth.BasicAuthInterceptor;
 import org.nuxeo.client.spi.auth.TokenAuthInterceptor;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import javax.annotation.Nonnull;
-import java.io.IOException;
-import java.util.Objects;
-import java.util.function.Supplier;
-
-import static org.nuxeo.client.ConstantsV1.API_PATH;
+import okhttp3.Response;
 
 /**
  * REST Client to Insight Cloud
  * For endpoints look at derived from {@link Resource}
  * for example:
- *  {@link ExportCaller} for Export API
- *  {@link ModelCaller} for Model API
+ * {@link ExportCaller} for Export API
+ * {@link ModelCaller} for Model API
  */
 public class InsightClient {
 

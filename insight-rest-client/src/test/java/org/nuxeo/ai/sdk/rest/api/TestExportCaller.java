@@ -20,8 +20,17 @@
 
 package org.nuxeo.ai.sdk.rest.api;
 
-import com.github.tomakehurst.wiremock.extension.responsetemplating.ResponseTemplateTransformer;
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.nuxeo.ai.sdk.rest.Common.CORPORA_ID_PARAM;
+import static org.nuxeo.ai.sdk.rest.Common.EXPORT_ID_PARAM;
+import static org.nuxeo.ai.sdk.rest.Common.MODEL_ID_PARAM;
+import static org.nuxeo.ai.sdk.rest.client.API.Export.BIND;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.Rule;
 import org.junit.Test;
 import org.nuxeo.ai.sdk.objects.AICorpus;
@@ -30,18 +39,8 @@ import org.nuxeo.ai.sdk.rest.client.API;
 import org.nuxeo.ai.sdk.rest.client.Authentication;
 import org.nuxeo.ai.sdk.rest.client.InsightClient;
 import org.nuxeo.ai.sdk.rest.client.InsightConfiguration;
-
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.nuxeo.ai.sdk.rest.Common.CORPORA_ID_PARAM;
-import static org.nuxeo.ai.sdk.rest.Common.EXPORT_ID_PARAM;
-import static org.nuxeo.ai.sdk.rest.Common.MODEL_ID_PARAM;
-import static org.nuxeo.ai.sdk.rest.client.API.Export.BIND;
+import com.github.tomakehurst.wiremock.extension.responsetemplating.ResponseTemplateTransformer;
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
 public class TestExportCaller {
 

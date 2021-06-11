@@ -20,11 +20,11 @@
 
 package org.nuxeo.ai.sdk.objects;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.Test;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class TestBucket {
 

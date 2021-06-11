@@ -3,8 +3,7 @@
     {
       "name": "file:content",
       "type": "img"
-    },
-    {
+    }, {
       "name": "dc:title",
       "type": "txt"
     }

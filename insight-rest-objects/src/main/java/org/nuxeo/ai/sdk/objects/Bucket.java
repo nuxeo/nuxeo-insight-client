@@ -19,17 +19,16 @@
  */
 package org.nuxeo.ai.sdk.objects;
 
+import org.apache.commons.lang3.StringUtils;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * POJO for defining statistics' bucket retrieved from ES
- *
  * <code>
  * {
- *  "key":"dc:title",
- *  "docCount":100
+ * "key":"dc:title",
+ * "docCount":100
  * }
  * </code>
  */

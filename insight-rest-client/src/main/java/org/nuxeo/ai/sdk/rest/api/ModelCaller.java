@@ -20,21 +20,20 @@
 
 package org.nuxeo.ai.sdk.rest.api;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import static org.nuxeo.ai.sdk.rest.Common.MODEL_ID_PARAM;
+import static org.nuxeo.ai.sdk.rest.Common.MODEL_NAME_PARAM;
+import static org.nuxeo.ai.sdk.rest.client.InsightClient.MAPPER;
+
+import java.io.Serializable;
+import java.util.Map;
+import java.util.Objects;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.nuxeo.ai.sdk.rest.client.API;
 import org.nuxeo.ai.sdk.rest.client.InsightClient;
 import org.nuxeo.ai.sdk.rest.exception.ConfigurationException;
 import org.nuxeo.ai.sdk.rest.exception.InvalidEndpointException;
-
-import java.io.Serializable;
-import java.util.Map;
-import java.util.Objects;
-
-import static org.nuxeo.ai.sdk.rest.Common.MODEL_ID_PARAM;
-import static org.nuxeo.ai.sdk.rest.Common.MODEL_NAME_PARAM;
-import static org.nuxeo.ai.sdk.rest.client.InsightClient.MAPPER;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
  * {@link Resource} for Model API of Insight Cloud

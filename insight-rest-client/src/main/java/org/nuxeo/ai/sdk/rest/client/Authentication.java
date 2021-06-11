@@ -19,9 +19,9 @@
  */
 package org.nuxeo.ai.sdk.rest.client;
 
+import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Objects;
 
 /**
  * Generic authentication configuration that supports authentications:

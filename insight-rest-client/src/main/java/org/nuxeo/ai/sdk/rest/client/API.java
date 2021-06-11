@@ -20,10 +20,9 @@
 
 package org.nuxeo.ai.sdk.rest.client;
 
-import org.nuxeo.ai.sdk.rest.exception.UnsupportedPathException;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import org.nuxeo.ai.sdk.rest.exception.UnsupportedPathException;
 
 /**
  * Class for enums containing public API to Insight Cloud
@@ -33,7 +32,6 @@ public class API {
     public enum HttpMethod {
         GET, POST, PUT, DELETE
     }
-
 
     public enum Export implements Endpoint {
 
@@ -95,7 +93,7 @@ public class API {
          * Resolve path between
          *
          * @param project Id of a client
-         * @param id can be a datasource or a label
+         * @param id      can be a datasource or a label
          * @return {@link String} as uri
          */
         public String toPath(@Nonnull String project, @Nullable String id, @Nullable String datasource) {
@@ -103,9 +101,9 @@ public class API {
             case ALL:
                 return API_AI + project + "/" + "models?properties=ai_model";
             case BY_DATASOURCE:
-                return  API_AI + project + "/" + "models?properties=ai_model&datasource=" + datasource;
+                return API_AI + project + "/" + "models?properties=ai_model&datasource=" + datasource;
             case PUBLISHED:
-                return  API_AI + project + "/" + "models?properties=ai_model&publishState=published&label=" + datasource;
+                return API_AI + project + "/" + "models?properties=ai_model&publishState=published&label=" + datasource;
             case DELTA:
                 return API_AI + project + "/model/" + id + "/corpusdelta";
             case PREDICT:

@@ -20,10 +20,10 @@
 
 package org.nuxeo.ai.sdk.rest;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.Test;
 import org.nuxeo.ai.sdk.rest.client.Authentication;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class TestAuthentication {
 
