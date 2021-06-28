@@ -47,15 +47,17 @@ else
   jx step changelog -v "v$RELEASE_VERSION"
 fi
 
-# Not including the release tag in master history
-git reset --hard "origin/$BRANCH"
+if [ "$INCREMENT" != 'release' ]; then
+  # Not including the release tag in master history
+  git reset --hard "origin/$BRANCH"
 
-mvn -B versions:set -DnewVersion="${NEXT_VERSION}-SNAPSHOT" -DgenerateBackupPoms=false
-jx step next-version --version="$NEXT_VERSION"
-git commit -a -m"Post release ${RELEASE_VERSION}. Set version ${NEXT_VERSION}."
-if [ "$DRY_RUN" = 'true' ]; then
-  echo "Dry run: skip 'git push' and 'jx start pipeline'"
-  git show
-else
-  git push origin "$BRANCH"
+  mvn -B versions:set -DnewVersion="${NEXT_VERSION}-SNAPSHOT" -DgenerateBackupPoms=false
+  jx step next-version --version="$NEXT_VERSION"
+  git commit -a -m"Post release ${RELEASE_VERSION}. Set version ${NEXT_VERSION}."
+  if [ "$DRY_RUN" = 'true' ]; then
+    echo "Dry run: skip 'git push' and 'jx start pipeline'"
+    git show
+  else
+    git push origin "$BRANCH"
+  fi
 fi
