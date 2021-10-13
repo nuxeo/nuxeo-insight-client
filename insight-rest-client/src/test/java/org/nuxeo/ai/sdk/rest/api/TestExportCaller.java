@@ -36,17 +36,11 @@ import org.junit.Test;
 import org.nuxeo.ai.sdk.objects.AICorpus;
 import org.nuxeo.ai.sdk.objects.CorporaParameters;
 import org.nuxeo.ai.sdk.rest.client.API;
-import org.nuxeo.ai.sdk.rest.client.Authentication;
 import org.nuxeo.ai.sdk.rest.client.InsightClient;
-import org.nuxeo.ai.sdk.rest.client.InsightConfiguration;
 import com.github.tomakehurst.wiremock.extension.responsetemplating.ResponseTemplateTransformer;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
-public class TestExportCaller {
-
-    @Rule
-    public WireMockRule wireMockRule = new WireMockRule(
-            options().extensions(new ResponseTemplateTransformer(true)).port(5089));
+public class TestExportCaller extends AbstractCallerTest {
 
     @Test
     public void shouldCallInitExportAPI() throws IOException {
@@ -84,16 +78,5 @@ public class TestExportCaller {
         params.put(EXPORT_ID_PARAM, "e67ee0e8-1bef-4fb7-9966-1d1408ce67a0");
         Boolean done = client.api(API.Export.DONE).call(params);
         assertThat(done).isNotNull().isTrue();
-    }
-
-    private InsightClient getInsightClient() {
-        Authentication auth = new Authentication("Administrator", "Administrator");
-        InsightConfiguration config = new InsightConfiguration.Builder().setProjectId("test")
-                                                                        .setAuthentication(auth)
-                                                                        .setUrl("http://localhost:5089")
-                                                                        .build();
-        InsightClient client = new InsightClient(config);
-        client.connect();
-        return client;
     }
 }

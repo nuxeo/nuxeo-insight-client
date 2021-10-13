@@ -31,6 +31,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.nuxeo.ai.sdk.rest.LogInterceptor;
 import org.nuxeo.ai.sdk.rest.ResponseHandler;
+import org.nuxeo.ai.sdk.rest.api.DedupCaller;
 import org.nuxeo.ai.sdk.rest.api.ExportCaller;
 import org.nuxeo.ai.sdk.rest.api.ModelCaller;
 import org.nuxeo.ai.sdk.rest.api.Resource;
@@ -53,9 +54,9 @@ import okhttp3.Response;
  */
 public class InsightClient {
 
-    public static final ObjectMapper MAPPER = new ObjectMapper();
-
     private static final Logger log = LogManager.getLogger(InsightClient.class);
+
+    public static final ObjectMapper MAPPER = new ObjectMapper();
 
     private final InsightConfiguration configuration;
 
@@ -134,6 +135,8 @@ public class InsightClient {
             return new ExportCaller(this, (API.Export) type);
         } else if (type instanceof API.Model) {
             return new ModelCaller(this, (API.Model) type);
+        } else if (type instanceof API.Dedup) {
+            return new DedupCaller(this, (API.Dedup) type);
         } else {
             return null;
         }

@@ -20,8 +20,10 @@
 
 package org.nuxeo.ai.sdk.rest.client;
 
+import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import org.apache.commons.lang3.StringUtils;
 import org.nuxeo.ai.sdk.rest.exception.UnsupportedPathException;
 
 /**
@@ -82,6 +84,9 @@ public class API {
         }
     }
 
+    /**
+     * Endpoints available for Model execution
+     */
     public enum Model implements Endpoint {
         ALL, BY_DATASOURCE, PUBLISHED, DELTA, PREDICT;
 
@@ -108,6 +113,49 @@ public class API {
                 return API_AI + project + "/model/" + id + "/corpusdelta";
             case PREDICT:
                 return API_AI + project + "/model/" + id + "/" + datasource + "/predict?datasource=" + datasource;
+            default:
+                throw new UnsupportedPathException("Invalid API call for " + this.name());
+            }
+        }
+    }
+
+    /**
+     * Endpoints available for Deduplication
+     */
+    public enum Dedup implements Endpoint {
+        INDEX, FIND;
+
+        public static final String API_DEDUP = "ai/dedup/";
+
+        /**
+         * Resolve path for
+         *
+         * @param project {@link String} as project Id
+         * @param docId   {@link String} as document id
+         * @param xpath   {@link String} as xpath to a property
+         * @return {@link String} URL path
+         */
+        public String toPath(@Nonnull String project, @Nullable String docId, @Nonnull String xpath) {
+            return toPath(project, docId, xpath, 0);
+        }
+
+        /**
+         * Resolve path for
+         *
+         * @param project  {@link String} as project Id
+         * @param docId    {@link String} as document id
+         * @param xpath    {@link String} as xpath to a property
+         * @param distance {@link Integer} as a distance to use in query
+         * @return {@link String} URL path
+         */
+        public String toPath(@Nonnull String project, @Nullable String docId, @Nonnull String xpath, int distance) {
+            switch (this) {
+            case INDEX:
+                Objects.requireNonNull(docId);
+                return API_DEDUP + project + "/index/" + docId + "/" + xpath;
+            case FIND:
+                String segment = StringUtils.isEmpty(docId) ? "/" : "/" + docId + "/";
+                return API_DEDUP + project + "/find" + segment + xpath + "?distance=" + distance;
             default:
                 throw new UnsupportedPathException("Invalid API call for " + this.name());
             }

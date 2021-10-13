@@ -17,30 +17,18 @@
  *  Contributors:
  *       Andrei Nechaev
  */
-
-package org.nuxeo.ai.sdk.rest;
+package org.nuxeo.ai.sdk.rest.exception;
 
 /**
- * Common Constants
+ * Thrown on invalid parameters passed into the path or query
  */
-public final class Common {
+public class InvalidParametersException extends RuntimeException {
 
-    public static final String UID = "uid";
+    public InvalidParametersException(String message) {
+        super(message);
+    }
 
-    public static final String MODEL_ID_PARAM = "modelId";
-
-    public static final String MODEL_NAME_PARAM = "modelName";
-
-    public static final String CORPORA_ID_PARAM = "corporaId";
-
-    public static final String EXPORT_ID_PARAM = "exportId";
-
-    public static final String XPATH_PARAM = "xpath";
-
-    public static final String DISTANCE_PARAM = "distance";
-
-    public static final String DEFAULT_XPATH = "file:content";
-
-    private Common() {
+    public InvalidParametersException(String message, Throwable cause) {
+        super(message, cause);
     }
 }
