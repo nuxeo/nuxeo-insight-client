@@ -1,12 +1,12 @@
 {
   "request": {
     "method": "POST",
-    "url": "/api/v1/ai/dedup/test/find?distance=0&xpath=file:content"
+    "url": "/api/v1/ai/dedup/test/find?distance=0"
   },
   "response": {
     "status": 200,
     "jsonBody": [
-      "doc_001", "doc_003"
+      "doc_001", "doc_003", "doc_004"
     ]
   }
 }

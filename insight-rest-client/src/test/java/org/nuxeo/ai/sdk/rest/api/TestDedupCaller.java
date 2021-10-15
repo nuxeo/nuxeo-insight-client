@@ -76,10 +76,14 @@ public class TestDedupCaller extends AbstractCallerTest {
         InsightClient client = getInsightClient();
         HashMap<String, Serializable> params = new HashMap<>();
         params.put(UID, "document_uuid_001");
-        params.put(XPATH_PARAM, DEFAULT_XPATH);
 
         List<String> result = client.api(Dedup.FIND).call(params, createTensor("document_uuid_001"));
+        assertThat(result).containsExactly("doc_001", "doc_003", "doc_004");
+
+        params.put(XPATH_PARAM, DEFAULT_XPATH);
+        result = client.api(Dedup.FIND).call(params, createTensor("document_uuid_001"));
         assertThat(result).containsExactly("doc_001", "doc_003");
+
     }
 
     private TensorInstances createTensor(String docId) {

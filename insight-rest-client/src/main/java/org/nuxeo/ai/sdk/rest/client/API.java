@@ -135,8 +135,9 @@ public class API {
          * @param xpath   {@link String} as xpath to a property
          * @return {@link String} URL path
          */
-        public String toPath(@Nonnull String project, @Nullable String docId, @Nonnull String xpath) {
-            return toPath(project, docId, xpath, 0);
+        public String toPath(HttpMethod method, @Nonnull String project, @Nullable String docId,
+                @Nonnull String xpath) {
+            return toPath(method, project, docId, xpath, 0);
         }
 
         /**
@@ -148,14 +149,20 @@ public class API {
          * @param distance {@link Integer} as a distance to use in query
          * @return {@link String} URL path
          */
-        public String toPath(@Nonnull String project, @Nullable String docId, @Nonnull String xpath, int distance) {
+        public String toPath(HttpMethod method, @Nonnull String project, @Nullable String docId, @Nonnull String xpath,
+                int distance) {
             switch (this) {
             case INDEX:
                 Objects.requireNonNull(docId);
                 return API_DEDUP + project + "/index/" + docId + "/" + xpath;
-            case FIND:
-                String segment = StringUtils.isEmpty(docId) ? "/" : "/" + docId + "/";
-                return API_DEDUP + project + "/find" + segment + xpath + "?distance=" + distance;
+            case FIND: {
+                if (method == HttpMethod.GET) {
+                    return API_DEDUP + project + "/find/" + docId + "/" + xpath + "?distance=" + distance;
+                } else {
+                    String segment = StringUtils.isEmpty(xpath) ? "" : "&xpath=" + xpath;
+                    return API_DEDUP + project + "/find?distance=" + distance + segment;
+                }
+            }
             default:
                 throw new UnsupportedPathException("Invalid API call for " + this.name());
             }

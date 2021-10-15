@@ -21,10 +21,11 @@
 package org.nuxeo.ai.sdk.rest.api;
 
 import static java.util.Collections.emptyList;
-import static org.nuxeo.ai.sdk.rest.Common.DEFAULT_XPATH;
 import static org.nuxeo.ai.sdk.rest.Common.DISTANCE_PARAM;
 import static org.nuxeo.ai.sdk.rest.Common.UID;
 import static org.nuxeo.ai.sdk.rest.Common.XPATH_PARAM;
+import static org.nuxeo.ai.sdk.rest.client.API.HttpMethod.GET;
+import static org.nuxeo.ai.sdk.rest.client.API.HttpMethod.POST;
 import static org.nuxeo.ai.sdk.rest.client.InsightClient.MAPPER;
 
 import java.io.IOException;
@@ -83,14 +84,14 @@ public class DedupCaller implements Resource {
     private Boolean handleIndex(Map<String, Serializable> parameters, TensorInstances payload)
             throws JsonProcessingException {
         String docId = (String) parameters.get(UID);
-        String xpath = (String) parameters.getOrDefault(XPATH_PARAM, DEFAULT_XPATH);
+        String xpath = (String) parameters.get(XPATH_PARAM);
         int distance = (int) parameters.getOrDefault(DISTANCE_PARAM, 0);
         if (StringUtils.isAnyEmpty(docId, xpath) || payload == null) {
             throw new InvalidParametersException("Document UUID, XPath and Payload are required parameters");
         }
 
         String json = MAPPER.writeValueAsString(payload);
-        return client.post(this.type.toPath(client.getProjectId(), docId, xpath, distance), json, response -> {
+        return client.post(this.type.toPath(POST, client.getProjectId(), docId, xpath, distance), json, response -> {
             if (response.isSuccessful()) {
                 log.debug("Successfully indexed document {} with xpath {}", docId, xpath);
                 return true;
@@ -106,8 +107,27 @@ public class DedupCaller implements Resource {
     private List<String> handleFind(Map<String, Serializable> parameters, TensorInstances payload)
             throws JsonProcessingException {
         String docId = (String) parameters.get(UID);
-        String xpath = (String) parameters.getOrDefault(XPATH_PARAM, DEFAULT_XPATH);
-        ResponseHandler<List<String>> handler = response -> {
+        String xpath = (String) parameters.get(XPATH_PARAM);
+        ResponseHandler<List<String>> handler = handleResponse(docId, xpath);
+
+        if (payload != null) {
+            if (StringUtils.isEmpty(docId)) {
+                throw new InvalidParametersException("Document UUID and XPath are required parameters");
+            }
+
+            String json = MAPPER.writeValueAsString(payload);
+            return client.post(this.type.toPath(POST, client.getProjectId(), null, xpath), json, handler);
+        } else {
+            if (StringUtils.isEmpty(xpath)) {
+                throw new InvalidParametersException("Document UUID and XPath are required parameters");
+            }
+
+            return client.get(this.type.toPath(GET, client.getProjectId(), docId, xpath), handler);
+        }
+    }
+
+    protected ResponseHandler<List<String>> handleResponse(String docId, String xpath) {
+        return response -> {
             if (!response.isSuccessful()) {
                 log.error(
                         "Failed to find any similar documents {} for xpath {} for project {};\nURL: {}\nresponse code: {}\nmessage: {}",
@@ -119,20 +139,5 @@ public class DedupCaller implements Resource {
                     MAPPER.readValue(response.body().byteStream(), LIST_TYPE_REFERENCE) :
                     emptyList();
         };
-
-        if (payload != null) {
-            if (StringUtils.isAnyEmpty(docId, xpath)) {
-                throw new InvalidParametersException("Document UUID and XPath are required parameters");
-            }
-
-            String json = MAPPER.writeValueAsString(payload);
-            return client.post(this.type.toPath(client.getProjectId(), null, xpath), json, handler);
-        } else {
-            if (StringUtils.isEmpty(xpath)) {
-                throw new InvalidParametersException("Document UUID and XPath are required parameters");
-            }
-
-            return client.get(this.type.toPath(client.getProjectId(), docId, xpath), handler);
-        }
     }
 }
