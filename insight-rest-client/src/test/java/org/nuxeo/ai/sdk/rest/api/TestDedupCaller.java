@@ -20,9 +20,11 @@
 package org.nuxeo.ai.sdk.rest.api;
 
 import static java.util.Collections.emptyMap;
+import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.nuxeo.ai.sdk.rest.Common.DEFAULT_XPATH;
+import static org.nuxeo.ai.sdk.rest.Common.Headers.SCROLL_ID_HEADER;
 import static org.nuxeo.ai.sdk.rest.Common.UID;
 import static org.nuxeo.ai.sdk.rest.Common.XPATH_PARAM;
 
@@ -93,11 +95,23 @@ public class TestDedupCaller extends AbstractCallerTest {
         InsightClient client = getInsightClient();
         ScrollableResult result = client.api(Dedup.ALL).call(emptyMap());
         assertThat(result).isNotNull();
-        assertThat(result.getScrollId()).isNotEmpty();
+        String scrollId = result.getScrollId();
+        assertThat(scrollId).isNotEmpty();
         assertThat(result.getResult()).isNotEmpty();
         assertThat(result.getResult().get(0).getDocumentId()).isNotEmpty();
         assertThat(result.getResult().get(0).getXpath()).isNotEmpty();
         assertThat(result.getResult().get(0).getSimilarDocumentIds()).isNotEmpty();
+        assertThat(result.getResult().get(0).getSimilarDocumentIds()).containsExactlyInAnyOrder("doc12", "doc13",
+                "doc14", "doc15", "doc16", "doc17", "doc18");
+
+        result = client.api(Dedup.ALL).call(singletonMap(SCROLL_ID_HEADER, scrollId));
+        assertThat(result).isNotNull();
+        assertThat(scrollId).isNotEmpty();
+        assertThat(result.getResult()).isNotEmpty();
+        assertThat(result.getResult().get(0).getDocumentId()).isNotEmpty();
+        assertThat(result.getResult().get(0).getXpath()).isNotEmpty();
+        assertThat(result.getResult().get(0).getSimilarDocumentIds()).isNotEmpty();
+        assertThat(result.getResult().get(0).getSimilarDocumentIds()).containsExactlyInAnyOrder("doc121", "doc123");
     }
 
     private TensorInstances createTensor(String docId) {

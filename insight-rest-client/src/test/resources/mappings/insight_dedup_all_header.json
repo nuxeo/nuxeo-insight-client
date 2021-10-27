@@ -2,9 +2,9 @@
   "request": {
     "method": "GET",
     "url": "/api/v1/ai/dedup/test/similars",
-    "headers": {
+    "headers" : {
       "Scroll-Id": {
-        "absent": true
+        "equalTo": "DXF1ZXJ5QW5kRmV0Y2gB...=="
       }
     }
   },
@@ -17,7 +17,7 @@
           "documentId": "doc10",
           "xpath": "file:content",
           "similarDocumentIds": [
-            "doc12", "doc13", "doc14", "doc15", "doc16", "doc17", "doc18"
+            "doc121", "doc123"
           ]
         }
       ]
