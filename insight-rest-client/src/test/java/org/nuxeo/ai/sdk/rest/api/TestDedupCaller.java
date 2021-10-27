@@ -19,6 +19,7 @@
  */
 package org.nuxeo.ai.sdk.rest.api;
 
+import static java.util.Collections.emptyMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.nuxeo.ai.sdk.rest.Common.DEFAULT_XPATH;
@@ -32,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import org.junit.Test;
 import org.nuxeo.ai.sdk.objects.TensorInstances;
+import org.nuxeo.ai.sdk.objects.deduplication.ScrollableResult;
 import org.nuxeo.ai.sdk.rest.client.API.Dedup;
 import org.nuxeo.ai.sdk.rest.client.InsightClient;
 import org.nuxeo.ai.sdk.rest.exception.InvalidParametersException;
@@ -84,6 +86,18 @@ public class TestDedupCaller extends AbstractCallerTest {
         result = client.api(Dedup.FIND).call(params, createTensor("document_uuid_001"));
         assertThat(result).containsExactly("doc_001", "doc_003");
 
+    }
+
+    @Test
+    public void shouldFindTuples() throws IOException {
+        InsightClient client = getInsightClient();
+        ScrollableResult result = client.api(Dedup.ALL).call(emptyMap());
+        assertThat(result).isNotNull();
+        assertThat(result.getScrollId()).isNotEmpty();
+        assertThat(result.getResult()).isNotEmpty();
+        assertThat(result.getResult().get(0).getDocumentId()).isNotEmpty();
+        assertThat(result.getResult().get(0).getXpath()).isNotEmpty();
+        assertThat(result.getResult().get(0).getSimilarDocumentIds()).isNotEmpty();
     }
 
     private TensorInstances createTensor(String docId) {

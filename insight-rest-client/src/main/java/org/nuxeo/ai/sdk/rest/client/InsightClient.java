@@ -20,9 +20,12 @@
 
 package org.nuxeo.ai.sdk.rest.client;
 
+import static java.util.Collections.emptyMap;
 import static org.nuxeo.client.ConstantsV1.API_PATH;
 
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 import javax.annotation.Nonnull;
@@ -146,6 +149,18 @@ public class InsightClient {
         if (client == null) {
             connect();
         }
+
+        return client;
+    }
+
+    protected NuxeoClient getClient(Map<String, Serializable> headers) throws ConfigurationException {
+        if (client == null) {
+            connect();
+        }
+
+        headers.forEach((header, value) -> {
+            client.header(header, value);
+        });
         return client;
     }
 
@@ -153,16 +168,28 @@ public class InsightClient {
         return configuration.getUrl() + API_PATH;
     }
 
-    public <T> T post(String postUrl, String jsonBody, ResponseHandler<T> handler) {
-        return callCloud(() -> getClient().post(getApiUrl() + postUrl, jsonBody), handler);
-    }
-
-    public <T> T put(String putUrl, String jsonBody, ResponseHandler<T> handler) {
-        return callCloud(() -> getClient().put(getApiUrl() + putUrl, jsonBody), handler);
-    }
-
     public <T> T get(String url, ResponseHandler<T> handler) {
-        return callCloud(() -> getClient().get(getApiUrl() + url), handler);
+        return get(url, emptyMap(), handler);
+    }
+
+    public <T> T get(String url, Map<String, Serializable> headers, ResponseHandler<T> handler) {
+        return callCloud(() -> getClient(headers).get(getApiUrl() + url), handler);
+    }
+
+    public <T> T post(String url, String json, ResponseHandler<T> handler) {
+        return post(url, emptyMap(), json, handler);
+    }
+
+    public <T> T post(String url, Map<String, Serializable> headers, String json, ResponseHandler<T> handler) {
+        return callCloud(() -> getClient(headers).post(getApiUrl() + url, json), handler);
+    }
+
+    public <T> T put(String url, String json, ResponseHandler<T> handler) {
+        return put(url, emptyMap(), json, handler);
+    }
+
+    public <T> T put(String url, Map<String, Serializable> headers, String json, ResponseHandler<T> handler) {
+        return callCloud(() -> getClient(headers).put(getApiUrl() + url, json), handler);
     }
 
     public <T> T callCloud(Supplier<Response> caller, ResponseHandler<T> handler) {

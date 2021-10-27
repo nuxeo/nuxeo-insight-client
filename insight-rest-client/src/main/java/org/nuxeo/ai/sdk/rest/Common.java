@@ -37,9 +37,20 @@ public final class Common {
 
     public static final String XPATH_PARAM = "xpath";
 
+    public static final String THRESHOLD_PARAM = "threshold";
+
     public static final String DISTANCE_PARAM = "distance";
 
     public static final String DEFAULT_XPATH = "file:content";
+
+    /**
+     * Custom headers used within Insight API
+     */
+    public static class Headers {
+
+        public static final String SCROLL_ID_HEADER = "Scroll-Id";
+
+    }
 
     private Common() {
     }
