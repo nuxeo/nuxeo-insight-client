@@ -36,18 +36,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.nuxeo.ai.sdk.objects.TensorInstances;
 import org.nuxeo.ai.sdk.rest.client.API;
-import org.nuxeo.ai.sdk.rest.client.Authentication;
 import org.nuxeo.ai.sdk.rest.client.InsightClient;
-import org.nuxeo.ai.sdk.rest.client.InsightConfiguration;
 import org.nuxeo.client.objects.Documents;
 import com.github.tomakehurst.wiremock.extension.responsetemplating.ResponseTemplateTransformer;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
-public class TestModelCaller {
-
-    @Rule
-    public WireMockRule wireMockRule = new WireMockRule(
-            options().extensions(new ResponseTemplateTransformer(true)).port(5089));
+public class TestModelCaller extends AbstractCallerTest {
 
     @Test
     public void shouldGetALLModels() throws IOException {
@@ -100,16 +94,5 @@ public class TestModelCaller {
         TensorInstances instances = new TensorInstances("a doc id", Collections.emptyList());
         String response = client.api(API.Model.PREDICT).call(params, instances);
         assertThat(response).isNotEmpty().isNotEqualTo("{}");
-    }
-
-    private InsightClient getInsightClient() {
-        Authentication auth = new Authentication("Administrator", "Administrator");
-        InsightConfiguration config = new InsightConfiguration.Builder().setProjectId("test")
-                                                                        .setAuthentication(auth)
-                                                                        .setUrl("http://localhost:5089")
-                                                                        .build();
-        InsightClient client = new InsightClient(config);
-        client.connect();
-        return client;
     }
 }

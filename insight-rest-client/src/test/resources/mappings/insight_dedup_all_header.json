@@ -1,0 +1,26 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/api/v1/ai/dedup/test/similars",
+    "headers" : {
+      "Scroll-Id": {
+        "equalTo": "DXF1ZXJ5QW5kRmV0Y2gB...=="
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "scrollId": "DXF1ZXJ5QW5kRmV0Y2gB...==",
+      "result": [
+        {
+          "documentId": "doc10",
+          "xpath": "file:content",
+          "similarDocumentIds": [
+            "doc121", "doc123"
+          ]
+        }
+      ]
+    }
+  }
+}

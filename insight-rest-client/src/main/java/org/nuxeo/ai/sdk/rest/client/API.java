@@ -20,8 +20,18 @@
 
 package org.nuxeo.ai.sdk.rest.client;
 
+import static java.util.Collections.emptyMap;
+import static org.nuxeo.ai.sdk.rest.Common.DISTANCE_PARAM;
+import static org.nuxeo.ai.sdk.rest.Common.THRESHOLD_PARAM;
+import static org.nuxeo.ai.sdk.rest.Common.UID;
+import static org.nuxeo.ai.sdk.rest.Common.XPATH_PARAM;
+
+import java.io.Serializable;
+import java.util.Map;
+import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import org.apache.commons.lang3.StringUtils;
 import org.nuxeo.ai.sdk.rest.exception.UnsupportedPathException;
 
 /**
@@ -82,6 +92,9 @@ public class API {
         }
     }
 
+    /**
+     * Endpoints available for Model execution
+     */
     public enum Model implements Endpoint {
         ALL, BY_DATASOURCE, PUBLISHED, DELTA, PREDICT;
 
@@ -108,6 +121,62 @@ public class API {
                 return API_AI + project + "/model/" + id + "/corpusdelta";
             case PREDICT:
                 return API_AI + project + "/model/" + id + "/" + datasource + "/predict?datasource=" + datasource;
+            default:
+                throw new UnsupportedPathException("Invalid API call for " + this.name());
+            }
+        }
+    }
+
+    /**
+     * Endpoints available for Deduplication
+     */
+    public enum Dedup implements Endpoint {
+        INDEX, FIND, ALL, REINDEX;
+
+        public static final String API_DEDUP = "ai/dedup/";
+
+        /**
+         * Resolve path for
+         *
+         * @param project {@link String} as project Id
+         * @return {@link String} URL path
+         */
+        public String toPath(HttpMethod method, @Nonnull String project) {
+            return toPath(method, project, emptyMap());
+        }
+
+        /**
+         * Resolve path for
+         *
+         * @param project    {@link String} as project Id
+         * @param parameters {@link Map} of query parameters
+         * @return {@link String} URL path
+         */
+        public String toPath(HttpMethod method, @Nonnull String project, Map<String, Serializable> parameters) {
+            Objects.requireNonNull(project);
+
+            String docId = (String) parameters.get(UID);
+            String xpath = (String) parameters.get(XPATH_PARAM);
+            int distance = (int) parameters.getOrDefault(DISTANCE_PARAM, 0);
+            switch (this) {
+            case INDEX:
+                Objects.requireNonNull(docId);
+                return API_DEDUP + project + "/index/" + docId + "/" + xpath;
+            case FIND: {
+                if (method == HttpMethod.GET) {
+                    Objects.requireNonNull(docId);
+                    Objects.requireNonNull(xpath);
+                    return API_DEDUP + project + "/find/" + docId + "/" + xpath + "?distance=" + distance;
+                } else {
+                    String segment = StringUtils.isEmpty(xpath) ? "" : "&xpath=" + xpath;
+                    return API_DEDUP + project + "/find?distance=" + distance + segment;
+                }
+            }
+            case ALL:
+                return API_DEDUP + project + "/similars";
+            case REINDEX:
+                int threshold = (int) parameters.get(THRESHOLD_PARAM);
+                return API_DEDUP + project + "/reindex?threshold=" + threshold;
             default:
                 throw new UnsupportedPathException("Invalid API call for " + this.name());
             }
