@@ -24,15 +24,17 @@ import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.nuxeo.ai.sdk.rest.Common.DEFAULT_XPATH;
-import static org.nuxeo.ai.sdk.rest.Common.Headers.SCROLL_ID_HEADER;
+import static org.nuxeo.ai.sdk.rest.Common.THRESHOLD_PARAM;
 import static org.nuxeo.ai.sdk.rest.Common.UID;
 import static org.nuxeo.ai.sdk.rest.Common.XPATH_PARAM;
+import static org.nuxeo.ai.sdk.rest.Common.Headers.SCROLL_ID_HEADER;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+
 import org.junit.Test;
 import org.nuxeo.ai.sdk.objects.TensorInstances;
 import org.nuxeo.ai.sdk.objects.deduplication.ScrollableResult;
@@ -112,6 +114,29 @@ public class TestDedupCaller extends AbstractCallerTest {
         assertThat(result.getResult().get(0).getXpath()).isNotEmpty();
         assertThat(result.getResult().get(0).getSimilarDocumentIds()).isNotEmpty();
         assertThat(result.getResult().get(0).getSimilarDocumentIds()).containsExactlyInAnyOrder("doc121", "doc123");
+    }
+
+    @Test
+    public void iCanRecalculateTuples() throws IOException {
+        InsightClient client = getInsightClient();
+        HashMap<String, Serializable> params = new HashMap<>();
+        params.put(THRESHOLD_PARAM, 0);
+        Boolean response = client.api(Dedup.RECALCULATETUPLES).call(params);
+        assertThat(response).isTrue();
+    }
+
+    @Test
+    public void iCanDeleteFromIndex() throws IOException {
+        InsightClient client = getInsightClient();
+        HashMap<String, Serializable> params = new HashMap<>();
+        params.put(UID, "document_uuid_001");
+        params.put(XPATH_PARAM, DEFAULT_XPATH);
+
+        Boolean result = client.api(Dedup.INDEX).call(params, createTensor("document_uuid_001"));
+        assertThat(result).isTrue();
+
+        result = client.api(Dedup.DELETE).call(params, "{}");
+        assertThat(result).isTrue();
     }
 
     private TensorInstances createTensor(String docId) {

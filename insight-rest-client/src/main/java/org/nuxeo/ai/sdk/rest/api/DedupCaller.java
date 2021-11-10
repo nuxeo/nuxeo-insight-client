@@ -26,6 +26,7 @@ import static java.util.Collections.singletonMap;
 import static org.nuxeo.ai.sdk.rest.Common.Headers.SCROLL_ID_HEADER;
 import static org.nuxeo.ai.sdk.rest.Common.UID;
 import static org.nuxeo.ai.sdk.rest.Common.XPATH_PARAM;
+import static org.nuxeo.ai.sdk.rest.client.API.HttpMethod.DELETE;
 import static org.nuxeo.ai.sdk.rest.client.API.HttpMethod.GET;
 import static org.nuxeo.ai.sdk.rest.client.API.HttpMethod.POST;
 import static org.nuxeo.ai.sdk.rest.client.InsightClient.MAPPER;
@@ -89,8 +90,10 @@ public class DedupCaller implements Resource {
             return (T) handleFind(parameters, (TensorInstances) payload);
         case ALL:
             return (T) handleAll(parameters);
-        case REINDEX:
-            return (T) handleReindex(parameters);
+        case RECALCULATETUPLES:
+            return (T) handleRecalculateTuples(parameters);
+        case DELETE:
+            return (T) handleDelete(parameters);
         default:
             throw new InvalidEndpointException("No such endpoint " + this.type.name());
         }
@@ -159,8 +162,12 @@ public class DedupCaller implements Resource {
         });
     }
 
-    private Boolean handleReindex(Map<String, Serializable> parameters) {
-        return client.post(this.type.toPath(POST, client.getProjectId(), parameters), null, Response::isSuccessful);
+    private Boolean handleRecalculateTuples(Map<String, Serializable> parameters) {
+        return client.post(this.type.toPath(POST, client.getProjectId(), parameters), "{}", Response::isSuccessful);
+    }
+
+    private Boolean handleDelete(Map<String, Serializable> parameters) {
+        return client.delete(this.type.toPath(DELETE, client.getProjectId(), parameters), "{}", Response::isSuccessful);
     }
 
     protected ResponseHandler<List<String>> handleResponse(String docId, String xpath) {
