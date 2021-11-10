@@ -1,0 +1,9 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/api/v1/ai/dedup/test/recalculateSimilarTuples?threshold=0"
+  },
+  "response": {
+    "status": 200
+  }
+}

@@ -184,6 +184,14 @@ public class InsightClient {
         return callCloud(() -> getClient(headers).post(getApiUrl() + url, json), handler);
     }
 
+    public <T> T delete(String url, String json, ResponseHandler<T> handler) {
+        return delete(url, emptyMap(), json, handler);
+    }
+
+    public <T> T delete(String url, Map<String, Serializable> headers, String json, ResponseHandler<T> handler) {
+        return callCloud(() -> getClient(headers).delete(getApiUrl() + url, json), handler);
+    }
+
     public <T> T put(String url, String json, ResponseHandler<T> handler) {
         return put(url, emptyMap(), json, handler);
     }
