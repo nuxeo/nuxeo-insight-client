@@ -128,10 +128,6 @@ public class DedupCaller implements Resource {
         ResponseHandler<List<String>> handler = handleResponse(docId, xpath);
 
         if (payload != null) {
-            if (StringUtils.isEmpty(docId)) {
-                throw new InvalidParametersException("Document UUID and XPath are required parameters");
-            }
-
             String json = MAPPER.writeValueAsString(payload);
             return client.post(this.type.toPath(POST, client.getProjectId(), parameters), json, handler);
         } else {
