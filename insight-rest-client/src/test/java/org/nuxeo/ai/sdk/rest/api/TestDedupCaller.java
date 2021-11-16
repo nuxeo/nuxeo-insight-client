@@ -81,13 +81,12 @@ public class TestDedupCaller extends AbstractCallerTest {
     public void shouldFindBasedOnTensor() throws IOException {
         InsightClient client = getInsightClient();
         HashMap<String, Serializable> params = new HashMap<>();
-        params.put(UID, "document_uuid_001");
 
-        List<String> result = client.api(Dedup.FIND).call(params, createTensor("document_uuid_001"));
+        List<String> result = client.api(Dedup.FIND).call(params, createTensor(null));
         assertThat(result).containsExactly("doc_001", "doc_003", "doc_004");
 
         params.put(XPATH_PARAM, DEFAULT_XPATH);
-        result = client.api(Dedup.FIND).call(params, createTensor("document_uuid_001"));
+        result = client.api(Dedup.FIND).call(params, createTensor(null));
         assertThat(result).containsExactly("doc_001", "doc_003");
 
     }
