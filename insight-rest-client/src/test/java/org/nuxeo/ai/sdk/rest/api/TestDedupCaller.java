@@ -136,6 +136,10 @@ public class TestDedupCaller extends AbstractCallerTest {
 
         result = client.api(Dedup.DELETE).call(params, "{}");
         assertThat(result).isTrue();
+
+        params.remove(XPATH_PARAM);
+        result = client.api(Dedup.DELETE).call(params, "{}");
+        assertThat(result).isTrue();
     }
 
     private TensorInstances createTensor(String docId) {
