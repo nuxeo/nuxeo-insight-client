@@ -29,10 +29,8 @@ import static org.nuxeo.ai.sdk.rest.Common.XPATH_PARAM;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import org.apache.commons.lang3.StringUtils;
 import org.nuxeo.ai.sdk.rest.exception.UnsupportedPathException;
 
@@ -180,7 +178,11 @@ public class API {
                 int threshold = (int) parameters.get(THRESHOLD_PARAM);
                 return API_DEDUP + project + "/recalculateSimilarTuples?threshold=" + threshold;
             case DELETE:
-                return API_DEDUP + project + "/index/" + docId + "?xpath=" + xpath;
+                String url = API_DEDUP + project + "/index/" + docId;
+                if (xpath != null) {
+                    url += "?xpath=" + xpath;
+                }
+                return url;
             default:
                 throw new UnsupportedPathException("Invalid API call for " + this.name());
             }

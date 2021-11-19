@@ -1,0 +1,9 @@
+{
+  "request": {
+    "method": "DELETE",
+    "url": "/api/v1/ai/dedup/test/index/document_uuid_001"
+  },
+  "response": {
+    "status": 204
+  }
+}
