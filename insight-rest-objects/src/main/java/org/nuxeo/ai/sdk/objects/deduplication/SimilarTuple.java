@@ -19,44 +19,80 @@
  */
 package org.nuxeo.ai.sdk.objects.deduplication;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import org.apache.commons.lang3.tuple.Pair;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * POJO representing a similar document tuple with the source document id, the given xpath and the similar documents.
  */
+@JsonDeserialize(using = SimilarTuple.SimilarTupleDeserializer.class)
 public class SimilarTuple implements Serializable {
 
-    private static final long serialVersionUID = -8481819084080610860L;
+    private static final long serialVersionUID = -1000077427339197687L;
 
     protected String documentId;
 
     protected String xpath;
 
-    protected List<String> similarDocumentIds;
+    protected Set<Pair<String, String>> similarDocuments;
 
     public SimilarTuple() {
     }
 
-    public SimilarTuple(String documentId, String xpath, List<String> similarDocumentIds) {
+    public SimilarTuple(String documentId, String xpath, Set<Pair<String, String>> similarDocuments) {
         this.documentId = documentId;
         this.xpath = xpath;
-        this.similarDocumentIds = similarDocumentIds;
+        this.similarDocuments = similarDocuments;
     }
 
     public String getDocumentId() {
         return documentId;
     }
 
-    public List<String> getSimilarDocumentIds() {
-        return similarDocumentIds;
+    public Set<Pair<String, String>> getSimilarDocuments() {
+        return similarDocuments;
     }
 
     public String getXpath() {
         return xpath;
     }
 
-    public void setXpath(String xpath) {
-        this.xpath = xpath;
+    public static class SimilarTupleDeserializer extends JsonDeserializer<SimilarTuple> {
+        @Override
+        public SimilarTuple deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
+                throws IOException {
+            TypeReference<Map<String, Object>> ref = new TypeReference<Map<String, Object>>() {
+            };
+            Map<String, Object> object = jsonParser.readValueAs(ref);
+            String docId = (String) object.get("documentId");
+            String xpath = (String) object.get("xpath");
+            @SuppressWarnings("unchecked")
+            List<Map<String, String>> similarDocumentsList = (List<Map<String, String>>) object.get("similarDocuments");
+            Set<Pair<String, String>> similarDocuments = similarDocumentsList.stream()
+                                                                             .filter(elem -> !elem.isEmpty())
+                                                                             .filter(elem -> elem.keySet()
+                                                                                                 .stream()
+                                                                                                 .findAny()
+                                                                                                 .isPresent())
+                                                                             .map(elem -> {
+                                                                                 String key = elem.keySet()
+                                                                                                  .stream()
+                                                                                                  .findAny()
+                                                                                                  .get();
+                                                                                 return Pair.of(key, elem.get(key));
+                                                                             })
+                                                                             .collect(Collectors.toSet());
+            return new SimilarTuple(docId, xpath, similarDocuments);
+        }
     }
 }

@@ -16,8 +16,22 @@
         {
           "documentId": "doc10",
           "xpath": "file:content",
-          "similarDocumentIds": [
-            "doc12", "doc13", "doc14", "doc15", "doc16", "doc17", "doc18"
+          "similarDocuments": [
+            {
+              "doc12": "file:content"
+            }, {
+              "doc13": "file:content"
+            }, {
+              "doc14": "file:content"
+            }, {
+              "doc15": "file:content"
+            }, {
+              "doc16": "file:content"
+            }, {
+              "doc17": "file:content"
+            }, {
+              "doc18": "file:content"
+            }
           ]
         }
       ]

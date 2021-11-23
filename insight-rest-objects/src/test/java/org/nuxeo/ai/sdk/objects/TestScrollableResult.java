@@ -22,7 +22,8 @@ package org.nuxeo.ai.sdk.objects;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Arrays;
+import org.apache.commons.lang3.tuple.Pair;
+import org.assertj.core.util.Sets;
 import org.junit.Test;
 import org.nuxeo.ai.sdk.objects.deduplication.ScrollableResult;
 import org.nuxeo.ai.sdk.objects.deduplication.SimilarTuple;
@@ -44,14 +45,19 @@ public class TestScrollableResult {
         assertThat(deserialized.getResult()).isEmpty();
         assertThat(deserialized.getScrollId()).isNull();
 
-        SimilarTuple similarTuple = new SimilarTuple("doc1", "file:content", Arrays.asList("doc2", "doc3"));
+        SimilarTuple similarTuple = new SimilarTuple("doc1", "file:content",
+                Sets.newLinkedHashSet(Pair.of("doc2", "file:content"), Pair.of("doc3", "file:content")));
         ScrollableResult result = new ScrollableResult("test", singletonList(similarTuple));
         json = MAPPER.writeValueAsString(result);
         assertThat(json).isNotEmpty();
 
         deserialized = MAPPER.readValue(json, ScrollableResult.class);
         assertThat(deserialized).isNotNull();
-        assertThat(deserialized.getResult()).isNotEmpty();
         assertThat(deserialized.getScrollId()).isEqualTo("test");
+        assertThat(deserialized.getResult()).isNotEmpty();
+        assertThat(deserialized.getResult().get(0)).isNotNull();
+        assertThat(deserialized.getResult().get(0).getSimilarDocuments()).isNotEmpty();
+        assertThat(deserialized.getResult().get(0).getSimilarDocuments()).containsExactlyInAnyOrder(
+                Pair.of("doc2", "file:content"), Pair.of("doc3", "file:content"));
     }
 }
