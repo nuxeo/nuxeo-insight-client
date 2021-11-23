@@ -24,17 +24,17 @@ import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.nuxeo.ai.sdk.rest.Common.DEFAULT_XPATH;
+import static org.nuxeo.ai.sdk.rest.Common.Headers.SCROLL_ID_HEADER;
 import static org.nuxeo.ai.sdk.rest.Common.THRESHOLD_PARAM;
 import static org.nuxeo.ai.sdk.rest.Common.UID;
 import static org.nuxeo.ai.sdk.rest.Common.XPATH_PARAM;
-import static org.nuxeo.ai.sdk.rest.Common.Headers.SCROLL_ID_HEADER;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Test;
 import org.nuxeo.ai.sdk.objects.TensorInstances;
 import org.nuxeo.ai.sdk.objects.deduplication.ScrollableResult;
@@ -101,9 +101,11 @@ public class TestDedupCaller extends AbstractCallerTest {
         assertThat(result.getResult()).isNotEmpty();
         assertThat(result.getResult().get(0).getDocumentId()).isNotEmpty();
         assertThat(result.getResult().get(0).getXpath()).isNotEmpty();
-        assertThat(result.getResult().get(0).getSimilarDocumentIds()).isNotEmpty();
-        assertThat(result.getResult().get(0).getSimilarDocumentIds()).containsExactlyInAnyOrder("doc12", "doc13",
-                "doc14", "doc15", "doc16", "doc17", "doc18");
+        assertThat(result.getResult().get(0).getSimilarDocuments()).isNotEmpty();
+        assertThat(result.getResult().get(0).getSimilarDocuments()).containsExactlyInAnyOrder(
+                Pair.of("doc12", "file:content"), Pair.of("doc13", "file:content"), Pair.of("doc14", "file:content"),
+                Pair.of("doc15", "file:content"), Pair.of("doc16", "file:content"), Pair.of("doc17", "file:content"),
+                Pair.of("doc18", "file:content"));
 
         result = client.api(Dedup.ALL).call(singletonMap(SCROLL_ID_HEADER, scrollId));
         assertThat(result).isNotNull();
@@ -111,8 +113,9 @@ public class TestDedupCaller extends AbstractCallerTest {
         assertThat(result.getResult()).isNotEmpty();
         assertThat(result.getResult().get(0).getDocumentId()).isNotEmpty();
         assertThat(result.getResult().get(0).getXpath()).isNotEmpty();
-        assertThat(result.getResult().get(0).getSimilarDocumentIds()).isNotEmpty();
-        assertThat(result.getResult().get(0).getSimilarDocumentIds()).containsExactlyInAnyOrder("doc121", "doc123");
+        assertThat(result.getResult().get(0).getSimilarDocuments()).isNotEmpty();
+        assertThat(result.getResult().get(0).getSimilarDocuments()).containsExactlyInAnyOrder(
+                Pair.of("doc121", "file:content"), Pair.of("doc123", "file:content"));
     }
 
     @Test
