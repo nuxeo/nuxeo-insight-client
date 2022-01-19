@@ -145,6 +145,13 @@ public class TestDedupCaller extends AbstractCallerTest {
         assertThat(result).isTrue();
     }
 
+    @Test
+    public void shouldCallDrop() throws IOException {
+        InsightClient client = getInsightClient();
+        Boolean result = client.api(Dedup.DROP).call();
+        assertThat(result).isTrue();
+    }
+
     private TensorInstances createTensor(String docId) {
         return new TensorInstances(docId, Collections.emptyList());
     }
