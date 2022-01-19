@@ -31,6 +31,11 @@ import javax.annotation.Nullable;
 public interface Resource {
 
     @Nullable
+    default <T> T call() throws IOException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Nullable
     <T> T call(Map<String, Serializable> parameters) throws IOException;
 
     @Nullable

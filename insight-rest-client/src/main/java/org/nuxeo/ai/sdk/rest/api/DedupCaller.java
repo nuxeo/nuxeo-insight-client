@@ -75,6 +75,12 @@ public class DedupCaller implements Resource {
 
     @Nullable
     @Override
+    public <T> T call() throws IOException {
+        return call(emptyMap());
+    }
+
+    @Nullable
+    @Override
     public <T> T call(Map<String, Serializable> parameters) throws IOException {
         return call(parameters, null);
     }
@@ -94,6 +100,8 @@ public class DedupCaller implements Resource {
             return (T) handleRecalculateTuples(parameters);
         case DELETE:
             return (T) handleDelete(parameters);
+        case DROP:
+            return (T) handleDrop();
         default:
             throw new InvalidEndpointException("No such endpoint " + this.type.name());
         }
@@ -164,6 +172,10 @@ public class DedupCaller implements Resource {
 
     private Boolean handleDelete(Map<String, Serializable> parameters) {
         return client.delete(this.type.toPath(DELETE, client.getProjectId(), parameters), "{}", Response::isSuccessful);
+    }
+
+    private Boolean handleDrop() {
+        return client.delete(this.type.toPath(DELETE, client.getProjectId()), "{}", Response::isSuccessful);
     }
 
     protected ResponseHandler<List<String>> handleResponse(String docId, String xpath) {

@@ -131,7 +131,7 @@ public class API {
      * Endpoints available for Deduplication
      */
     public enum Dedup implements Endpoint {
-        INDEX, FIND, ALL, RECALCULATETUPLES, DELETE;
+        INDEX, FIND, ALL, RECALCULATETUPLES, DELETE, DROP;
 
         public static final String API_DEDUP = "ai/dedup/";
 
@@ -183,6 +183,8 @@ public class API {
                     url += "?xpath=" + xpath;
                 }
                 return url;
+            case DROP:
+                return API_DEDUP + project + "/drop";
             default:
                 throw new UnsupportedPathException("Invalid API call for " + this.name());
             }
