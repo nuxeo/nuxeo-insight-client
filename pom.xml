@@ -28,7 +28,7 @@
     <javax.validation.version>1.0.0.GA</javax.validation.version>
     <log4j.version>2.17.1</log4j.version>
     <javax.ws.version>1.1.1</javax.ws.version>
-    <jackson.version>2.11.3</jackson.version>
+    <jackson.version>2.12.6.1</jackson.version>
     <apache.commons.version>3.8.1</apache.commons.version>
     <awaitility.version>3.1.6</awaitility.version>
     <commons-io.version>2.7</commons-io.version>
