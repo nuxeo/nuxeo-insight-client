@@ -20,7 +20,7 @@
 
 package org.nuxeo.ai.sdk.rest.api;
 
-import static javax.ws.rs.core.Response.Status.OK;
+import static jakarta.ws.rs.core.Response.Status.OK;
 import static org.nuxeo.ai.sdk.rest.Common.CORPORA_ID_PARAM;
 import static org.nuxeo.ai.sdk.rest.Common.EXPORT_ID_PARAM;
 import static org.nuxeo.ai.sdk.rest.Common.MODEL_ID_PARAM;
