@@ -1,0 +1,33 @@
+name: Release
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches:
+      - 'lts-2023'
+      - 'lts-2025'
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  build-and-release:
+    uses: Alfresco/alfresco-build-tools/.github/workflows/build-and-release-maven.yml@v10.0.0
+    with:
+      java-version: '21'
+      java-distribution: 'zulu'
+      skip-tests: true
+      auto-release: false
+      release-branches: '^(lts-2023|lts-2025)$'
+      release-args: '-s .github/settings.xml'
+      extra-maven-opts: '-s .github/settings.xml -Dnexus.username=${MAVEN_USERNAME} -Dnexus.password=${MAVEN_PASSWORD}'
+    secrets:
+      NEXUS_USERNAME: ${{ secrets.REPOSITORY_MANAGER_USERNAME }}
+      NEXUS_PASSWORD: ${{ secrets.REPOSITORY_MANAGER_PASSWORD }}
+      BOT_GITHUB_USERNAME: ${{ vars.BOT_GITHUB_USERNAME }}
+      BOT_GITHUB_EMAIL: ${{ vars.BOT_GITHUB_EMAIL }}
+      BOT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

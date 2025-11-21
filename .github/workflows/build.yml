@@ -1,0 +1,27 @@
+name: Build and Test
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+    branches:
+      - master
+      - lts-2023
+      - lts-2025
+
+# Prevent multiple builds from running simultaneously on the same branch
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    uses: Alfresco/alfresco-build-tools/.github/workflows/build-and-release-maven.yml@v10.0.0
+    with:
+      java-version: '21'
+      java-distribution: 'zulu'
+      skip-tests: false
+      auto-release: false
+    secrets:
+      NEXUS_USERNAME: ${{ secrets.REPOSITORY_MANAGER_USERNAME }}
+      NEXUS_PASSWORD: ${{ secrets.REPOSITORY_MANAGER_PASSWORD }}
