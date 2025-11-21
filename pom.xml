@@ -28,10 +28,10 @@
     <javax.validation.version>1.0.0.GA</javax.validation.version>
     <log4j.version>2.17.1</log4j.version>
     <javax.ws.version>1.1.1</javax.ws.version>
-    <jackson.version>2.11.3</jackson.version>
-    <apache.commons.version>3.8.1</apache.commons.version>
+    <jackson.version>2.15.0</jackson.version>
+    <apache.commons.version>3.18.0</apache.commons.version>
     <awaitility.version>3.1.6</awaitility.version>
-    <commons-io.version>2.7</commons-io.version>
+    <commons-io.version>2.14.0</commons-io.version>
     <javax.activation.version>1.2.0</javax.activation.version>
     <junit.version>4.13.1</junit.version>
     <assertj.version>3.18.1</assertj.version>
