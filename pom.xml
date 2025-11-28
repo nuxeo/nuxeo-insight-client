@@ -3,7 +3,7 @@
 
   <groupId>org.nuxeo.ai</groupId>
   <artifactId>nuxeo-insight-client</artifactId>
-  <version>1.4.0</version>
+  <version>1.4.1-SNAPSHOT</version>
   
   <name>Nuxeo Insight Client</name>
   <description>Nuxeo Insight REST SDK</description>
@@ -198,7 +198,7 @@
     <connection>scm:git:https://github.com/nuxeo/nuxeo-insight-client.git</connection>
     <developerConnection>scm:git:https://github.com/nuxeo/nuxeo-insight-client.git</developerConnection>
     <url>https://github.com/nuxeo/nuxeo-insight-client</url>
-    <tag>v1.4.0</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <distributionManagement>
