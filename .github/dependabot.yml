@@ -1,0 +1,33 @@
+version: 2
+updates:
+  # Maven dependencies
+  - package-ecosystem: "maven"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    groups:
+      version-updates:
+        applies-to: "version-updates"
+        patterns:
+          - "*"
+    ignore:
+      # Major and minor version updates
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
+      # Nuxeo dependencies
+      - dependency-name: "org.nuxeo.*"
+      - dependency-name: "org.nuxeo:nuxeo-parent"
+        update-types: ["version-update:semver-patch"]
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      version-updates:
+        applies-to: "version-updates"
+        patterns:
+          - "*"
+

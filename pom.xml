@@ -1,11 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.nuxeo.ai</groupId>
   <artifactId>nuxeo-insight-client</artifactId>
   <version>1.4.0-SNAPSHOT</version>
-
+  
   <name>Nuxeo Insight Client</name>
   <description>Nuxeo Insight REST SDK</description>
   <packaging>pom</packaging>
@@ -47,6 +46,17 @@
           <configuration>
             <outputFile>${project.build.directory}/outdated-dependencies.txt</outputFile>
             <!--            <rulesUri>file:///${session.executionRootDirectory}/versions-rules.xml</rulesUri>-->
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>3.0.1</version>
+          <configuration>
+            <tagNameFormat>v@{project.version}</tagNameFormat>
+            <scmCommentPrefix>[maven-release-plugin][skip ci] </scmCommentPrefix>
+            <pushChanges>true</pushChanges>
+            <remoteTagging>true</remoteTagging>
           </configuration>
         </plugin>
       </plugins>
@@ -185,9 +195,10 @@
   </pluginRepositories>
 
   <scm>
-    <connection>scm:git:git://github.com/nuxeo/nuxeo-insight-client.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com:nuxeo/nuxeo-insight-client.git</developerConnection>
-    <url>https://nuxeo.github.io</url>
+    <connection>scm:git:https://github.com/nuxeo/nuxeo-insight-client.git</connection>
+    <developerConnection>scm:git:https://github.com/nuxeo/nuxeo-insight-client.git</developerConnection>
+    <url>https://github.com/nuxeo/nuxeo-insight-client</url>
+    <tag>HEAD</tag>
   </scm>
 
   <distributionManagement>
