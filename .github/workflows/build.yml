@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   build:
-    uses: Alfresco/alfresco-build-tools/.github/workflows/build-and-release-maven.yml@v10.0.0
+    uses: Alfresco/alfresco-build-tools/.github/workflows/build-and-release-maven.yml@v10.1.0
     with:
       java-version: '21'
       java-distribution: 'zulu'
