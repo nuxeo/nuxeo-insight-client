@@ -20,14 +20,14 @@
     <maven.compiler.release>21</maven.compiler.release>
     <nuxeo.java.client>4.0.3</nuxeo.java.client>
     <jsr305.version>3.0.2</jsr305.version>
-    <log4j.version>2.25.2</log4j.version>
+    <log4j.version>2.25.3</log4j.version>
     <jackson.annotations.version>2.20</jackson.annotations.version>
-    <jackson.version>2.20.0</jackson.version>
+    <jackson.version>2.20.2</jackson.version>
     <apache.commons.version>3.19.0</apache.commons.version>
     <awaitility.version>4.3.0</awaitility.version>
     <commons-io.version>2.21.0</commons-io.version>
     <junit.version>4.13.2</junit.version>
-    <assertj.version>3.27.6</assertj.version>
+    <assertj.version>3.27.7</assertj.version>
     <wiremock.version>2.27.2</wiremock.version>
   </properties>
 
